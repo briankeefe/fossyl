@@ -9,6 +9,7 @@ const authenticationMiddleware = (headers: Record<string, string>) => {
 
 const baseRouter = createRouter("/status");
 const endpoint = baseRouter.createEndpoint("/status");
+
 const getter = endpoint.get({
   authenticator: authenticationMiddleware,
   handler: async (params, auth) => {
@@ -27,3 +28,4 @@ const poster = endpoint.post({
     };
   },
 });
+

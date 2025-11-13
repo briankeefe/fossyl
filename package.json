@@ -1,23 +1,25 @@
 {
-  "name": "fossyl",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "fossyl-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Type-safe REST API framework designed for AI-assisted development",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write \"src/**/*.{ts,js,json}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,js,json}\"",
-     "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm -r --filter './packages/*' build",
+    "dev": "pnpm -r --parallel --filter './packages/*' dev",
+    "test": "pnpm -r --filter './packages/*' test",
+    "clean": "pnpm -r --filter './packages/*' clean",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "typecheck": "pnpm -r --filter './packages/*' typecheck"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "YoyoSaur",
+  "license": "MIT",
   "packageManager": "pnpm@10.12.1",
-  "dependencies": {
-    "typescript": "^5.8.3",
-    "zod": "^4.0.10"
-  },
   "devDependencies": {
-    "prettier": "^3.6.2"
+    "@types/node": "^20.0.0",
+    "prettier": "^3.6.2",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.3"
   }
 }
