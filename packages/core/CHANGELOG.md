@@ -1,5 +1,11 @@
 # fossyl
 
+## 0.1.3
+
+### Patch Changes
+
+- Fixed SVG
+
 ## 0.1.2
 
 ### Patch Changes

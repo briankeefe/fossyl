@@ -1,6 +1,6 @@
 {
   "name": "fossyl",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/YoyoSaur/fossyl.git"
@@ -24,7 +24,8 @@
     "dist",
     "src",
     "CLAUDE.md",
-    "README.md"
+    "README.md",
+    "fossyl.svg"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",

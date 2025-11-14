@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/YoyoSaur/fossyl/main/fossyl.svg" alt="Fossyl Logo" width="200" height="200">
+  <img src="./fossyl.svg" alt="Fossyl Logo" width="200" height="200">
 
   # Fossyl
 
