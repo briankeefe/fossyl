@@ -1,5 +1,11 @@
 # fossyl
 
+## 0.1.5
+
+### Patch Changes
+
+- Finally getting SVG to work.
+
 ## 0.1.4
 
 ### Patch Changes

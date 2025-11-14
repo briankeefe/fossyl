@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./fossyl.svg" alt="Fossyl Logo" width="200" height="200">
+    <img src="https://cdn.jsdelivr.net/npm/fossyl/packages/core/fossyl.svg" width="200" height="200" alt="Fossyl Logo" />
 
   # Fossyl
 
