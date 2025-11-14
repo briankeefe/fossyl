@@ -1,2 +1,6 @@
 node_modules/
-**dist**
+dist/
+*.log
+.DS_Store
+.changeset/*.md
+!.changeset/README.md
