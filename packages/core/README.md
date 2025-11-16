@@ -39,7 +39,7 @@ yarn add fossyl
 ## Quick Start
 
 ```typescript
-import { createRouter } from 'fossyl';
+import { createRouter, authWrapper } from 'fossyl';
 
 // Create a router
 const router = createRouter();
@@ -52,11 +52,11 @@ const userRoute = router.endpoint('/users/:id').get({
   }
 });
 
-// Routes with authentication
+// Routes with authentication (must be async for OAuth, JWT, etc.)
 const authenticatedRoute = router.endpoint('/protected').get({
   authenticator: async (headers) => {
-    // Your auth logic here
-    return { userId: headers['user-id'] };
+    // Your async auth logic here (OAuth, JWT verification, DB lookup, etc.)
+    return authWrapper({ userId: headers['user-id'] });
   },
   handler: async ({ url }, auth) => {
     // auth is fully typed based on your authenticator!

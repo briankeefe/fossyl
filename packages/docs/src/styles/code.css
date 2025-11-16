@@ -1,0 +1,143 @@
+/* fossyl color theme for code */
+:root {
+  /* fossyl brand colors for syntax highlighting */
+  --code-bg: #3d2a0d;
+  --code-fg: #f8e8d6;
+  --code-comment: #a08060;
+  --code-keyword: #ee7508;
+  --code-string: #e3bc8e;
+  --code-function: #da8825;
+  --code-number: #f8e8d6;
+  --code-operator: #da8825;
+  --code-variable: #e3bc8e;
+  --code-tag: #ee7508;
+}
+
+/* Unified code block styling */
+.prose pre,
+.astro-code,
+pre[class*='language-'] {
+  background: var(--code-bg) !important;
+  color: var(--code-fg) !important;
+  padding: 1.75rem !important;
+  border-radius: 0 !important;
+  overflow-x: auto !important;
+  margin: 2rem 0 !important;
+  border: 6px solid var(--fossyl-brown) !important;
+  box-shadow: 10px 10px 0px var(--fossyl-brown) !important;
+  font-family: 'Monaco', 'Courier New', monospace !important;
+  font-size: 0.95rem !important;
+  line-height: 1.7 !important;
+  position: relative !important;
+}
+
+/* Add subtle inner glow effect */
+.prose pre::before,
+.astro-code::before,
+pre[class*='language-']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--fossyl-orange), var(--fossyl-bright-orange));
+}
+
+/* Hover effect for code blocks */
+.prose pre:hover,
+.astro-code:hover,
+pre[class*='language-']:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 12px 12px 0px var(--fossyl-brown) !important;
+  transition: all 0.2s ease;
+}
+
+/* Inline code */
+.prose :not(pre) > code,
+code:not(pre code) {
+  background: var(--fossyl-tan) !important;
+  color: var(--fossyl-brown) !important;
+  padding: 0.2em 0.5em !important;
+  border-radius: 0 !important;
+  font-size: 0.875em !important;
+  font-weight: 700 !important;
+  border: 2px solid var(--fossyl-brown) !important;
+  font-family: 'Monaco', 'Courier New', monospace !important;
+}
+
+/* Syntax highlighting - fossyl theme */
+.astro-code .token.comment,
+.astro-code .token.prolog,
+.astro-code .token.doctype,
+.astro-code .token.cdata {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+.astro-code .token.punctuation {
+  color: var(--code-fg);
+}
+
+.astro-code .token.property,
+.astro-code .token.tag,
+.astro-code .token.constant,
+.astro-code .token.symbol,
+.astro-code .token.deleted {
+  color: var(--code-tag);
+}
+
+.astro-code .token.boolean,
+.astro-code .token.number {
+  color: var(--code-number);
+}
+
+.astro-code .token.selector,
+.astro-code .token.attr-name,
+.astro-code .token.string,
+.astro-code .token.char,
+.astro-code .token.builtin,
+.astro-code .token.inserted {
+  color: var(--code-string);
+}
+
+.astro-code .token.operator,
+.astro-code .token.entity,
+.astro-code .token.url,
+.astro-code .token.variable {
+  color: var(--code-operator);
+}
+
+.astro-code .token.atrule,
+.astro-code .token.attr-value,
+.astro-code .token.function,
+.astro-code .token.class-name {
+  color: var(--code-function);
+}
+
+.astro-code .token.keyword {
+  color: var(--code-keyword);
+}
+
+.astro-code .token.regex,
+.astro-code .token.important {
+  color: var(--code-keyword);
+}
+
+.astro-code .token.important,
+.astro-code .token.bold {
+  font-weight: bold;
+}
+
+.astro-code .token.italic {
+  font-style: italic;
+}
+
+/* Generic fallback for code without syntax highlighting */
+pre code {
+  color: var(--code-fg) !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-weight: normal !important;
+}

@@ -1,0 +1,200 @@
+---
+import '../styles/code.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} - fossyl Documentation</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <a href="/" class="logo">fossyl</a>
+        <div class="nav-links">
+          <a href="/getting-started">Getting Started</a>
+          <a href="/api-reference">API Reference</a>
+          <a href="https://github.com/YoyoSaur/fossyl">GitHub</a>
+        </div>
+      </div>
+    </nav>
+    <main class="docs-main">
+      <article class="prose">
+        <slot />
+      </article>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --fossyl-tan: #e3bc8e;
+    --fossyl-orange: #da8825;
+    --fossyl-cream: #f8e8d6;
+    --fossyl-brown: #6d4204;
+    --fossyl-bright-orange: #ee7508;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      sans-serif;
+    color: var(--fossyl-brown);
+    background: var(--fossyl-cream);
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  nav {
+    background: var(--fossyl-tan);
+    border-bottom: 5px solid var(--fossyl-brown);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 0px var(--fossyl-brown);
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--fossyl-brown);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 3px 3px 0px var(--fossyl-orange);
+  }
+
+  .logo:hover {
+    text-shadow: 2px 2px 0px var(--fossyl-orange);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    color: var(--fossyl-brown);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.1s;
+    padding: 0.5rem 1rem;
+    border: 3px solid transparent;
+  }
+
+  .nav-links a:hover {
+    border: 3px solid var(--fossyl-brown);
+    background: var(--fossyl-orange);
+    box-shadow: 3px 3px 0px var(--fossyl-brown);
+  }
+
+  .docs-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .prose {
+    line-height: 1.7;
+  }
+
+  .prose h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    color: var(--fossyl-brown);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    border-bottom: 6px solid var(--fossyl-brown);
+    padding-bottom: 1rem;
+  }
+
+  .prose h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    color: var(--fossyl-brown);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding: 1rem;
+    background: var(--fossyl-tan);
+    border: 4px solid var(--fossyl-brown);
+    box-shadow: 6px 6px 0px var(--fossyl-brown);
+  }
+
+  .prose h3 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--fossyl-brown);
+  }
+
+  .prose p {
+    margin-bottom: 1.25rem;
+    color: var(--fossyl-brown);
+    font-weight: 500;
+  }
+
+  .prose a {
+    color: var(--fossyl-bright-orange);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 3px solid var(--fossyl-orange);
+  }
+
+  .prose a:hover {
+    background: var(--fossyl-orange);
+    border-bottom: 3px solid var(--fossyl-brown);
+  }
+
+  .prose ul,
+  .prose ol {
+    margin: 1.25rem 0;
+    padding-left: 2rem;
+  }
+
+  .prose li {
+    margin: 0.5rem 0;
+    color: var(--fossyl-brown);
+    font-weight: 500;
+  }
+
+  .prose blockquote {
+    border-left: 6px solid var(--fossyl-orange);
+    background: var(--fossyl-tan);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    color: var(--fossyl-brown);
+    font-weight: 700;
+    font-style: normal;
+    box-shadow: 4px 4px 0px var(--fossyl-brown);
+  }
+</style>

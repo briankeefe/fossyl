@@ -1,0 +1,59 @@
+---
+layout: ../layouts/Layout.astro
+title: fossyl - Type-safe REST API Framework
+---
+
+import '../styles/home.css';
+
+<div class="hero">
+  <h1>fossyl</h1>
+  <p class="tagline">Type-safe REST API framework designed for AI-assisted development</p>
+  <div class="actions">
+    <a href="/getting-started" class="button primary">Get Started</a>
+    <a href="https://github.com/YoyoSaur/fossyl" class="button secondary">GitHub</a>
+  </div>
+</div>
+
+## Features
+
+<div class="feature-grid">
+  <div class="feature">
+    <h3>Type-Safe Routes</h3>
+    <p>Full TypeScript type inference for routes, parameters, and responses</p>
+  </div>
+  <div class="feature">
+    <h3>REST Semantics</h3>
+    <p>Compile-time validation of REST patterns</p>
+  </div>
+  <div class="feature">
+    <h3>Pure Functional</h3>
+    <p>Validator-library agnostic with simple function types</p>
+  </div>
+  <div class="feature">
+    <h3>Query Validation</h3>
+    <p>Optional type-safe query parameter validation</p>
+  </div>
+  <div class="feature">
+    <h3>Authentication</h3>
+    <p>Type-safe authentication with custom authentication functions</p>
+  </div>
+  <div class="feature">
+    <h3>AI-First</h3>
+    <p>Designed for seamless integration with AI coding assistants</p>
+  </div>
+</div>
+
+## Quick Example
+
+```typescript
+import { createRouter } from 'fossyl';
+
+const router = createRouter();
+
+const userRoute = router.endpoint('/users/:id').get({
+  handler: async ({ url }) => {
+    const userId = url.id; // Fully typed!
+    return { id: userId, name: 'John Doe' };
+  }
+});
+```

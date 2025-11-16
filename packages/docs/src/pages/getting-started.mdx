@@ -1,0 +1,122 @@
+---
+layout: ../layouts/DocsLayout.astro
+title: Getting Started
+---
+
+# Getting Started
+
+Get up and running with fossyl in minutes.
+
+## Installation
+
+Install fossyl using your preferred package manager:
+
+```bash
+npm install fossyl
+```
+
+```bash
+pnpm add fossyl
+```
+
+```bash
+yarn add fossyl
+```
+
+## Basic Usage
+
+Create your first route with fossyl:
+
+```typescript
+import { createRouter } from 'fossyl';
+
+const router = createRouter();
+
+const userRoute = router.endpoint('/users/:id').get({
+  handler: async ({ url }) => {
+    const userId = url.id; // Fully typed!
+    return { id: userId, name: 'John Doe' };
+  },
+});
+```
+
+## Type Safety
+
+fossyl provides full type inference for your routes:
+
+```typescript
+// URL parameters are automatically typed
+const route = router.endpoint('/posts/:postId/comments/:commentId').get({
+  handler: async ({ url }) => {
+    // url.postId and url.commentId are both typed as string
+    return { postId: url.postId, commentId: url.commentId };
+  },
+});
+```
+
+## Adding Validation
+
+Use any validation library you prefer:
+
+```typescript
+// Example with custom validation
+const createUserRoute = router.endpoint('/users').post({
+  bodyValidator: (data) => {
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid body');
+    }
+    const { name, email } = data as { name?: unknown; email?: unknown };
+    if (typeof name !== 'string' || typeof email !== 'string') {
+      throw new Error('Name and email must be strings');
+    }
+    return { name, email };
+  },
+  handler: async ({ url, body }) => {
+    // body is typed as { name: string; email: string }
+    return { id: '123', ...body };
+  },
+});
+```
+
+## Query Parameters
+
+Add type-safe query parameter validation:
+
+```typescript
+const searchRoute = router.endpoint('/search').get({
+  queryValidator: (data) => {
+    return data as { q: string; limit?: number };
+  },
+  handler: async ({ url, query }) => {
+    // query is fully typed
+    return { results: [], query: query.q, limit: query.limit };
+  },
+});
+```
+
+## Authentication
+
+Add type-safe authentication to your routes:
+
+```typescript
+const protectedRoute = router.endpoint('/protected').get({
+  authenticator: async (headers) => {
+    const token = headers['authorization'];
+    if (!token) {
+      throw new Error('Unauthorized');
+    }
+    // Return user data
+    return { userId: '123', role: 'admin' };
+  },
+  handler: async ({ url }, auth) => {
+    // auth is fully typed based on authenticator return type
+    return { message: `Hello, user ${auth.userId}` };
+  },
+});
+```
+
+## Next Steps
+
+- Explore the [API Reference](/api-reference) for detailed documentation
+- Check out the [GitHub repository](https://github.com/YoyoSaur/fossyl) for examples
+- Join the community and contribute!

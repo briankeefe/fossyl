@@ -1,7 +1,8 @@
 import { createRouter } from "./router/router";
 import { authWrapper } from "./router/types/routes.types";
 
-const authenticationMiddleware = (headers: Record<string, string>) => {
+const authenticationMiddleware = async (headers: Record<string, string>) => {
+  // Simulate async auth (e.g., OAuth, database lookup, JWT verification)
   return authWrapper({
     status: headers.authorization,
   });

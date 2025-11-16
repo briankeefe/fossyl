@@ -1,0 +1,130 @@
+---
+import '../styles/code.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <a href="/" class="logo">fossyl</a>
+        <div class="nav-links">
+          <a href="/getting-started">Getting Started</a>
+          <a href="/api-reference">API Reference</a>
+          <a href="https://github.com/YoyoSaur/fossyl">GitHub</a>
+        </div>
+      </div>
+    </nav>
+    <main class="content">
+      <slot />
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --fossyl-tan: #e3bc8e;
+    --fossyl-orange: #da8825;
+    --fossyl-cream: #f8e8d6;
+    --fossyl-brown: #6d4204;
+    --fossyl-bright-orange: #ee7508;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      sans-serif;
+    color: var(--fossyl-brown);
+    background: var(--fossyl-cream);
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  nav {
+    background: var(--fossyl-tan);
+    border-bottom: 5px solid var(--fossyl-brown);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 0px var(--fossyl-brown);
+  }
+
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--fossyl-brown);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 3px 3px 0px var(--fossyl-orange);
+  }
+
+  .logo:hover {
+    text-shadow: 2px 2px 0px var(--fossyl-orange);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    color: var(--fossyl-brown);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.1s;
+    padding: 0.5rem 1rem;
+    border: 3px solid transparent;
+  }
+
+  .nav-links a:hover {
+    border: 3px solid var(--fossyl-brown);
+    background: var(--fossyl-orange);
+    box-shadow: 3px 3px 0px var(--fossyl-brown);
+  }
+
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--fossyl-brown);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 3rem 0 2rem;
+    text-align: center;
+  }
+</style>

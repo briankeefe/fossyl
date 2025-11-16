@@ -11,7 +11,7 @@ import { RestMethod } from "./routes.types";
 export type ValidatorFunction<T extends unknown = unknown> = (data: unknown) => T;
 export type AuthenticationFunction<T extends Authentication> = (
   headers: Record<string, string>
-) => T;
+) => Promise<T>;
 
 /**
  * This is the most confusing part of the type system, but also key.
