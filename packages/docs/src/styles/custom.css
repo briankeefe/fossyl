@@ -1,0 +1,318 @@
+/* Fossyl Neobrutalist Theme for Starlight */
+
+/* ===== Color Variables ===== */
+:root {
+  /* Fossyl brand colors */
+  --fossyl-tan: #E3BC8E;
+  --fossyl-orange: #DA8825;
+  --fossyl-cream: #F8E8D6;
+  --fossyl-brown: #6D4204;
+  --fossyl-dark-brown: #3D2A0D;
+  --fossyl-bright-orange: #EE7508;
+  --fossyl-red-orange: #F5583A;
+  --fossyl-gold: #E8C547;
+  --fossyl-sage-green: #A3B18A;
+
+  /* Override Starlight colors - Light theme only */
+  --sl-color-white: var(--fossyl-cream);
+  --sl-color-gray-1: var(--fossyl-cream);
+  --sl-color-gray-2: var(--fossyl-tan);
+  --sl-color-gray-3: var(--fossyl-orange);
+  --sl-color-gray-4: var(--fossyl-brown);
+  --sl-color-gray-5: var(--fossyl-brown);
+  --sl-color-gray-6: var(--fossyl-brown);
+  --sl-color-black: var(--fossyl-brown);
+
+  /* Hide theme switcher */
+  starlight-theme-select {
+    display: none !important;
+  }
+
+  --sl-color-accent: var(--fossyl-orange);
+  --sl-color-accent-low: var(--fossyl-tan);
+  --sl-color-accent-high: var(--fossyl-bright-orange);
+
+  --sl-color-text: var(--fossyl-brown);
+  --sl-color-text-accent: var(--fossyl-orange);
+
+  /* Background colors */
+  --sl-color-bg: var(--fossyl-tan);
+  --sl-color-bg-nav: var(--fossyl-tan);
+  --sl-color-bg-sidebar: var(--fossyl-tan);
+  --sl-color-bg-inline-code: var(--fossyl-cream);
+
+  /* Code colors */
+  --code-bg: var(--fossyl-dark-brown);
+  --code-fg: var(--fossyl-cream);
+  --code-comment: #a08060;
+  --code-keyword: var(--fossyl-bright-orange);
+  --code-string: var(--fossyl-tan);
+  --code-function: var(--fossyl-orange);
+
+  /* Border radius override - NO ROUNDED CORNERS */
+  --sl-border-radius: 0;
+  --sl-border-radius-sm: 0;
+  --sl-border-radius-lg: 0;
+}
+
+/* ===== Typography ===== */
+:root {
+  --sl-text-h1: 900;
+  --sl-text-h2: 900;
+  --sl-text-h3: 900;
+  --sl-text-h4: 700;
+  --sl-text-h5: 700;
+  --sl-font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--fossyl-brown);
+}
+
+h1 {
+  text-shadow: 4px 4px 0px var(--fossyl-orange);
+  font-size: 3rem;
+}
+
+h2, h3, h4, h5, h6 {
+  text-shadow: none;
+}
+
+/* ===== Links ===== */
+a {
+  color: var(--fossyl-orange);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--fossyl-orange);
+  transition: all 0.1s;
+}
+
+a:hover {
+  color: var(--fossyl-bright-orange);
+  border-bottom-color: var(--fossyl-bright-orange);
+}
+
+/* ===== Buttons ===== */
+.sl-link-button,
+button,
+[role="button"] {
+  border-radius: 0 !important;
+  border: 4px solid var(--fossyl-brown) !important;
+  box-shadow: 6px 6px 0px var(--fossyl-brown) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.1s !important;
+}
+
+.sl-link-button:hover,
+button:hover,
+[role="button"]:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0px var(--fossyl-brown) !important;
+}
+
+.sl-link-button:active,
+button:active,
+[role="button"]:active {
+  transform: translate(6px, 6px);
+  box-shadow: 0px 0px 0px var(--fossyl-brown) !important;
+}
+
+.sl-link-button.primary {
+  background: var(--fossyl-orange) !important;
+  color: var(--fossyl-brown) !important;
+}
+
+.sl-link-button.secondary,
+.sl-link-button.minimal {
+  background: var(--fossyl-cream) !important;
+  color: var(--fossyl-brown) !important;
+}
+
+/* ===== Cards ===== */
+.sl-card,
+.card,
+.starlight-aside {
+  background: var(--fossyl-cream) !important;
+  border: 4px solid var(--fossyl-brown) !important;
+  border-radius: 0 !important;
+  box-shadow: 8px 8px 0px var(--fossyl-brown) !important;
+  padding: 2rem !important;
+  transition: all 0.2s !important;
+}
+
+.sl-card:hover,
+.card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 12px 12px 0px var(--fossyl-brown) !important;
+}
+
+.sl-card h3,
+.card h3 {
+  color: var(--fossyl-brown);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.sl-card p,
+.card p,
+.sl-card,
+.card {
+  color: var(--fossyl-brown) !important;
+}
+
+/* ===== Layout ===== */
+.main-frame {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== Navigation ===== */
+.header {
+  box-shadow: 0 4px 0px var(--fossyl-brown) !important;
+  box-sizing: content-box !important;
+}
+
+.header > div,
+.header .sl-flex {
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Remove padding/gap that creates double line effect */
+.header,
+header.header,
+.sl-header {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Don't hide anything - removed selectors that were hiding sidebar */
+
+/* Hide mobile menu button on desktop - might be causing double header */
+@media (min-width: 768px) {
+  .mobile-starlight-menu-toggle,
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+}
+
+.site-title {
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--fossyl-brown) !important;
+  text-shadow: 2px 2px 0px var(--fossyl-orange);
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  background: var(--fossyl-tan) !important;
+}
+
+.sidebar a {
+  border-bottom: none !important;
+  font-weight: 600;
+}
+
+.sidebar a:hover {
+  background: var(--fossyl-tan) !important;
+  transform: translateX(4px);
+}
+
+.sidebar a[aria-current="page"] {
+  background: var(--fossyl-orange) !important;
+  color: var(--fossyl-brown) !important;
+  font-weight: 900 !important;
+  border-left: 6px solid var(--fossyl-brown) !important;
+}
+
+/* ===== Hero Section (Splash Template) ===== */
+.hero {
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  color: var(--fossyl-brown);
+  text-shadow: 4px 4px 0px var(--fossyl-orange);
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+.hero .tagline {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fossyl-brown);
+  margin-bottom: 2rem;
+}
+
+/* ===== Tables ===== */
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 4px solid var(--fossyl-brown) !important;
+  box-shadow: 8px 8px 0px var(--fossyl-brown) !important;
+}
+
+th {
+  background: var(--fossyl-orange) !important;
+  color: var(--fossyl-brown) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  border: 2px solid var(--fossyl-brown) !important;
+}
+
+td {
+  border: 2px solid var(--fossyl-brown) !important;
+}
+
+/* ===== Blockquotes ===== */
+blockquote {
+  border-left: 6px solid var(--fossyl-orange) !important;
+  background: var(--fossyl-tan) !important;
+  padding: 1.5rem !important;
+  margin: 2rem 0 !important;
+  box-shadow: 6px 6px 0px var(--fossyl-brown) !important;
+}
+
+/* ===== Search ===== */
+.search-input {
+  border: 3px solid var(--fossyl-brown) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0px var(--fossyl-brown) !important;
+}
+
+.search-input:focus {
+  border-color: var(--fossyl-orange) !important;
+  box-shadow: 6px 6px 0px var(--fossyl-orange) !important;
+}
+
+/* ===== Mobile Menu ===== */
+.mobile-menu-toggle {
+  border: 3px solid var(--fossyl-brown) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0px var(--fossyl-brown) !important;
+}
+
+/* ===== Pagination ===== */
+.pagination-links a {
+  border: 3px solid var(--fossyl-brown) !important;
+  border-radius: 0 !important;
+  box-shadow: 5px 5px 0px var(--fossyl-brown) !important;
+  font-weight: 700 !important;
+  transition: all 0.1s !important;
+}
+
+.pagination-links a:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0px var(--fossyl-brown) !important;
+}

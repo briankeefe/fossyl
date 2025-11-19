@@ -1,0 +1,54 @@
+---
+title: Fossyl
+description: Type-safe REST API framework designed for AI-assisted development
+template: splash
+hero:
+  tagline: Type-safe REST API framework designed for AI-assisted development
+  actions:
+    - text: Get Started
+      link: /getting-started/
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/gHashTag/fossyl
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Features
+
+<CardGrid>
+  <Card title="Type-Safe Routes" icon="approve-check">
+    Full TypeScript type inference for routes, parameters, and responses
+  </Card>
+  <Card title="REST Semantics" icon="puzzle">
+    Compile-time validation of REST patterns
+  </Card>
+  <Card title="Pure Functional" icon="star">
+    Validator-library agnostic with simple function types
+  </Card>
+  <Card title="Query Validation" icon="magnifier">
+    Optional type-safe query parameter validation
+  </Card>
+  <Card title="Authentication" icon="shield">
+    Type-safe authentication with custom authentication functions
+  </Card>
+  <Card title="AI-First" icon="rocket">
+    Designed for seamless integration with AI coding assistants
+  </Card>
+</CardGrid>
+
+## Quick Example
+
+```typescript
+import { createRouter } from 'fossyl';
+
+const router = createRouter();
+
+const userRoute = router.endpoint('/users/:id').get({
+  handler: async ({ url }) => {
+    const userId = url.id; // Fully typed!
+    return { id: userId, name: 'John Doe' };
+  }
+});
+```
