@@ -6,9 +6,23 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'Fossyl',
+      title: 'fossyl',
       description: 'Type-safe REST API framework with compile-time guarantees',
+      favicon: '/favicon.svg',
+      head: [
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'icon',
+            href: '/favicon.svg',
+            type: 'image/svg+xml',
+          },
+        },
+      ],
       expressiveCode: {
+        defaultProps: {
+          frame: 'none',
+        },
         themes: [{
           type: 'dark',
           name: 'fossyl-theme',

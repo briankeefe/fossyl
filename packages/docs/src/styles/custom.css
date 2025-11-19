@@ -53,6 +53,9 @@
   --sl-border-radius: 0;
   --sl-border-radius-sm: 0;
   --sl-border-radius-lg: 0;
+
+  /* Layout overrides - Make content use full width */
+  --sl-content-width: 100%;
 }
 
 /* ===== Typography ===== */
@@ -67,7 +70,6 @@
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 900;
-  text-transform: uppercase;
   letter-spacing: 0.02em;
   color: var(--fossyl-brown);
 }
@@ -168,15 +170,12 @@ button:active,
 
 /* ===== Layout ===== */
 .main-frame {
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
 }
 
 /* ===== Navigation ===== */
 .header {
   box-shadow: 0 4px 0px var(--fossyl-brown) !important;
-  box-sizing: content-box !important;
 }
 
 .header > div,
@@ -196,14 +195,6 @@ header.header,
 
 /* Don't hide anything - removed selectors that were hiding sidebar */
 
-/* Hide mobile menu button on desktop - might be causing double header */
-@media (min-width: 768px) {
-  .mobile-starlight-menu-toggle,
-  .mobile-menu-toggle {
-    display: none !important;
-  }
-}
-
 .site-title {
   font-weight: 900 !important;
   text-transform: uppercase !important;
@@ -215,6 +206,7 @@ header.header,
 /* ===== Sidebar ===== */
 .sidebar {
   background: var(--fossyl-tan) !important;
+  min-width: 16rem !important;
 }
 
 .sidebar a {
@@ -234,9 +226,18 @@ header.header,
   border-left: 6px solid var(--fossyl-brown) !important;
 }
 
+/* ===== Table of Contents (On This Page) ===== */
+.right-sidebar,
+.right-sidebar-panel,
+.right-sidebar-container,
+aside.right-sidebar {
+  min-width: 16rem !important;
+}
+
 /* ===== Hero Section (Splash Template) ===== */
 .hero {
   text-align: center;
+  align-items: center;
 }
 
 .hero h1 {
@@ -246,6 +247,7 @@ header.header,
   text-shadow: 4px 4px 0px var(--fossyl-orange);
   letter-spacing: -0.02em;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .hero .tagline {
@@ -255,24 +257,20 @@ header.header,
   margin-bottom: 2rem;
 }
 
-/* ===== Tables ===== */
-table {
-  border-collapse: separate !important;
-  border-spacing: 0 !important;
-  border: 4px solid var(--fossyl-brown) !important;
-  box-shadow: 8px 8px 0px var(--fossyl-brown) !important;
-}
+/* Swap hero grid order on wider screens - logo on right */
+@media (min-width: 50rem) {
+  .hero {
+    grid-template-columns: 4fr 7fr !important;
+  }
 
-th {
-  background: var(--fossyl-orange) !important;
-  color: var(--fossyl-brown) !important;
-  font-weight: 900 !important;
-  text-transform: uppercase !important;
-  border: 2px solid var(--fossyl-brown) !important;
-}
+  .hero > img,
+  .hero > .hero-html {
+    order: 1 !important;
+  }
 
-td {
-  border: 2px solid var(--fossyl-brown) !important;
+  .hero .stack {
+    order: 2 !important;
+  }
 }
 
 /* ===== Blockquotes ===== */
