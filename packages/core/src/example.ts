@@ -29,4 +29,3 @@ const poster = endpoint.post({
     };
   },
 });
-
