@@ -9,6 +9,7 @@ Fossyl is a TypeScript REST API framework that provides:
 - REST semantics enforcement at compile-time
 - Validator-library agnostic design
 - Type-safe authentication and query parameter validation
+- Configuration-driven code generation with framework adapters
 
 ## Installation
 
@@ -134,6 +135,70 @@ const fullRoute = router.createEndpoint('/api/resource/:id').post({
 });
 ```
 
+## Configuration & Code Generation
+
+Fossyl uses a configuration file to generate TypeScript code for your chosen HTTP framework.
+
+### 1. Configuration File
+
+Create a `fossyl.config.ts` file:
+
+```typescript
+import { defineConfig } from 'fossyl';
+// Note: Framework adapters are in development
+// import { expressAdapter } from '@fossyl/express';
+
+export default defineConfig({
+  routes: './src/routes',
+  output: './src/server.generated.ts',
+  adapters: {
+    // framework: expressAdapter({ cors: true }), // Coming soon
+    framework: customFrameworkAdapter, // Build your own for now
+  },
+  validation: {
+    requirePrefix: '/api',
+    enforceFilePrefix: true,
+  },
+});
+```
+
+### 2. Adapter Types
+
+Fossyl supports three types of adapters:
+
+**Framework Adapters** (Required):
+```typescript
+type FrameworkAdapter = {
+  type: 'framework';
+  name: string;
+  generate: (routes: RouteInfo[], ctx: GeneratorContext) => string;
+  createDevServer?: (routes: RouteInfo[], options: DevServerOptions) => DevServer;
+};
+```
+
+**Database Adapters** (Optional):
+```typescript
+type DatabaseAdapter = {
+  type: 'database';
+  name: string;
+  clientPath: string;
+  defaultTransaction: boolean;
+  autoMigrate: boolean;
+  emitSetup: () => string;
+  emitWrapper: (handlerCode: string, useTransaction: boolean) => string;
+  emitStartup: () => string;
+};
+```
+
+**Validation Adapters** (Optional):
+```typescript
+type ValidationAdapter = {
+  type: 'validation';
+  name: string;
+  formatError: (error: unknown) => { message: string; details?: unknown };
+};
+```
+
 ## REST Method Types
 
 Available methods: `get`, `post`, `put`, `delete`
@@ -179,13 +244,15 @@ Fossyl provides four distinct route types based on what validation is required:
 ## Adapter Libraries
 
 **Note:** Adapter libraries for popular frameworks are currently in development:
-- `fossyl-express` - Express.js adapter (coming soon)
-- `fossyl-fastify` - Fastify adapter (coming soon)
+- `@fossyl/express` - Express.js adapter (coming soon)
+- `@fossyl/fastify` - Fastify adapter (coming soon)
+- `@fossyl/prisma-kysely` - Prisma + Kysely database adapter (coming soon)
 
 **For now, you'll need to build your own adapter** to integrate Fossyl routes with your HTTP framework. The route handlers return standard promises that resolve to response objects, making integration straightforward.
 
 ## Type Exports
 
+### Core Types
 ```typescript
 import type {
   Authentication,
@@ -194,10 +261,44 @@ import type {
   ValidatedRoute,
   FullRoute,
   RestMethod,
+  Route,
   ValidatorFunction,
   AuthenticationFunction,
   Endpoint,
-  Router
+  Router,
+  Params
+} from 'fossyl';
+```
+
+### Configuration Types
+```typescript
+import type {
+  FossylConfig,
+  ValidationOptions,
+  AdaptersConfig
+} from 'fossyl';
+```
+
+### Adapter Types
+```typescript
+import type {
+  FrameworkAdapter,
+  DatabaseAdapter,
+  ValidationAdapter,
+  GeneratorContext,
+  DevServer,
+  DevServerOptions,
+  RouteInfo,
+  HttpMethod
+} from 'fossyl';
+```
+
+### Validation Types
+```typescript
+import type {
+  ValidationResult,
+  ValidationError,
+  ValidationWarning
 } from 'fossyl';
 ```
 
@@ -220,6 +321,10 @@ import type {
    - No body validation: parameters come first, then auth (if present)
 
 6. **URL Parameters**: Parameters in the route path (e.g., `:id`, `:userId`) are automatically typed and available in `url` object.
+
+7. **Configuration**: Use `defineConfig()` helper for type-safe configuration with autocomplete.
+
+8. **Adapters**: When building custom adapters, the `Route` union type represents all possible route configurations.
 
 ## Example: Complete API
 
@@ -288,3 +393,4 @@ When working on this codebase:
 - Follow REST semantics strictly
 - Keep error messages clear and actionable
 - Test with TypeScript strict mode enabled
+- Consider adapter extensibility when adding features
