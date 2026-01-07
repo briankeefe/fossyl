@@ -1,5 +1,5 @@
 {
-  "name": "fossyl",
+  "name": "@fossyl/core",
   "version": "0.1.6",
   "repository": {
     "type": "git",

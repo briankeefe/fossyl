@@ -1,0 +1,56 @@
+{
+  "name": "fossyl",
+  "version": "0.1.0",
+  "description": "CLI for fossyl - Type-safe REST API framework",
+  "type": "module",
+  "bin": {
+    "fossyl": "./bin/fossyl.js"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "bin",
+    "CLAUDE.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "dev": "tsup src/index.ts --format esm --dts --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "tsx": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@fossyl/core": ">=0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@fossyl/core": "workspace:*",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.0"
+  },
+  "keywords": [
+    "fossyl",
+    "cli",
+    "typescript",
+    "rest-api",
+    "code-generation"
+  ],
+  "author": "YoyoSaur",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
