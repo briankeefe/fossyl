@@ -1,0 +1,27 @@
+# Fossyl Theme for Ghostty
+# A warm, earthy theme with neobrutalist aesthetics
+
+background = #3d2a0d
+foreground = #f8e8d6
+cursor-color = #f8e8d6
+cursor-text = #3d2a0d
+selection-background = #6D4204
+selection-foreground = #f8e8d6
+
+# ANSI Colors (0-7: normal, 8-15: bright)
+palette = 0=#3d2a0d
+palette = 1=#F5583A
+palette = 2=#A3B18A
+palette = 3=#E8C547
+palette = 4=#DA8825
+palette = 5=#EE7508
+palette = 6=#E3BC8E
+palette = 7=#f8e8d6
+palette = 8=#6D4204
+palette = 9=#F5583A
+palette = 10=#A3B18A
+palette = 11=#E8C547
+palette = 12=#DA8825
+palette = 13=#EE7508
+palette = 14=#E3BC8E
+palette = 15=#F8E8D6

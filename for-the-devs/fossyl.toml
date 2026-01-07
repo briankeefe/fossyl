@@ -1,0 +1,52 @@
+# Fossyl Terminal Theme
+# A warm, earthy theme with neobrutalist aesthetics
+# Compatible with: Alacritty, WezTerm, and other TOML-based terminals
+
+[colors.primary]
+background = "#3d2a0d"
+foreground = "#f8e8d6"
+
+[colors.cursor]
+cursor = "#f8e8d6"
+text = "#3d2a0d"
+
+[colors.selection]
+background = "#6D4204"
+text = "#f8e8d6"
+
+[colors.search]
+matches = { background = "#E8C547", foreground = "#3d2a0d" }
+focused_match = { background = "#EE7508", foreground = "#3d2a0d" }
+
+# Normal colors (ANSI 0-7)
+[colors.normal]
+black = "#3d2a0d"      # Background
+red = "#F5583A"        # Red-orange (keywords)
+green = "#A3B18A"      # Sage green (strings)
+yellow = "#E8C547"     # Gold (properties)
+blue = "#DA8825"       # Orange (types) - used as blue substitute
+magenta = "#EE7508"    # Bright orange (functions)
+cyan = "#E3BC8E"       # Tan (variables)
+white = "#f8e8d6"      # Cream (foreground)
+
+# Bright colors (ANSI 8-15)
+[colors.bright]
+black = "#6D4204"      # Brown
+red = "#F5583A"        # Red-orange
+green = "#A3B18A"      # Sage green
+yellow = "#E8C547"     # Gold
+blue = "#DA8825"       # Orange
+magenta = "#EE7508"    # Bright orange
+cyan = "#E3BC8E"       # Tan
+white = "#F8E8D6"      # Cream
+
+# Dim colors (optional)
+[colors.dim]
+black = "#2a1c08"
+red = "#c04830"
+green = "#829070"
+yellow = "#c0a038"
+blue = "#b07020"
+magenta = "#c06008"
+cyan = "#c09870"
+white = "#d0c8b8"

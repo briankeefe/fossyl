@@ -2,7 +2,7 @@
 
 ## Overview
 
-`@fossyl/core` is the runtime package containing type definitions, `createRouter`, `defineConfig`, and adapter interfaces. It has zero CLI dependencies and minimal footprint.
+`@fossyl/core` already exists with the router and route types. This plan covers **only the additions needed** for the adapter/CLI system.
 
 ## Package Info
 
@@ -12,13 +12,21 @@
 
 ---
 
-## Responsibilities
+## What Already Exists ✅
 
-1. **Route Types**: Define `Route`, `RouteInfo`, and route builder types
-2. **Router Factory**: `createRouter()` for building type-safe routes
-3. **Config Types**: `defineConfig()` and `FossylConfig` type
-4. **Adapter Interfaces**: `FrameworkAdapter`, `DatabaseAdapter`, `ValidationAdapter`
-5. **Validation Types**: Error and warning types for validation
+- `createRouter()` - router factory
+- Route types (`OpenRoute`, `AuthenticatedRoute`, `ValidatedRoute`, `FullRoute`)
+- `authWrapper()` - authentication branding
+- URL params extraction (`Params<Path>`)
+- Type inference for handlers
+
+## What Needs to Be Added
+
+1. **Config Types**: `defineConfig()` and `FossylConfig` type
+2. **Adapter Interfaces**: `FrameworkAdapter`, `DatabaseAdapter`
+3. **RouteInfo Type**: For CLI/code generation to track route metadata
+4. **Validation Types**: `ValidationResult`, `ValidationError`, `ValidationWarning`
+5. **Transaction Property**: Add `transaction?: boolean` to route types
 
 ---
 
