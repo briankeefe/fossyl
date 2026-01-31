@@ -215,19 +215,12 @@ export type FullRoute<
       ) => Promise<Res>;
 };
 
-// export type Route<
-//   Path extends string,
-//   Res extends unknown,
-//   Method extends RestMethod,
-//   RequestBody extends unknown | undefined = undefined,
-//   Auth extends Authentication | undefined = undefined,
-//   Query extends unknown | undefined = undefined,
-// > = [RequestBody, Auth] extends [undefined, undefined]
-//   ? OpenRoute<Path, Method, Res, Query>
-//   : [RequestBody, Auth] extends [undefined, infer A extends Authentication]
-//     ? AuthenticatedRoute<Path, Method, Res, A, Query>
-//     : [RequestBody, Auth] extends [infer B, undefined]
-//       ? ValidatedRoute<Path, Method, Res, B, Query>
-//       : [RequestBody, Auth] extends [infer B, infer A extends Authentication]
-//         ? FullRoute<Path, Method, Res, B, A, Query>
-//         : never;
+/**
+ * Union of all route types.
+ * Used by adapters and CLI for route processing.
+ */
+export type Route =
+  | OpenRoute<string, RestMethod, unknown, unknown>
+  | AuthenticatedRoute<string, RestMethod, unknown, Authentication, unknown>
+  | ValidatedRoute<string, RestMethod, unknown, unknown, unknown>
+  | FullRoute<string, RestMethod, unknown, unknown, Authentication, unknown>;

@@ -1,7 +1,20 @@
 // Router creation
 export { createRouter } from "./router/router";
 
-// Type exports
+// Config
+export { defineConfig } from "./config";
+export type { FossylConfig, AdaptersConfig } from "./config";
+
+// Adapter types
+export type {
+  FrameworkAdapter,
+  DatabaseAdapter,
+  DatabaseContext,
+  ValidationAdapter,
+  HttpMethod,
+} from "./adapters";
+
+// Route types
 export type {
   Authentication,
   OpenRoute,
@@ -9,6 +22,7 @@ export type {
   ValidatedRoute,
   FullRoute,
   RestMethod,
+  Route,
 } from "./router/types/routes.types";
 
 export type {
@@ -17,6 +31,15 @@ export type {
 } from "./router/types/configuration.types";
 
 export type { Endpoint, Router } from "./router/types/router-creation.types";
+
+export type { Params } from "./router/types/params.types";
+
+// Validation types
+export type {
+  ValidationResult,
+  ValidationError,
+  ValidationWarning,
+} from "./validation";
 
 // Utility exports
 export { authWrapper } from "./router/types/routes.types";
