@@ -1,6 +1,7 @@
 import { Params } from "./params.types";
 import {
   Authentication,
+  ResponseData,
   AuthenticatedRoute,
   FullRoute,
   OpenRoute,
@@ -42,7 +43,7 @@ export type AuthenticationFunction<T extends Authentication> = (
  */
 export type EndpointCreationFunction<Path extends string, Method extends RestMethod> = {
   // Validated route: no auth, no query
-  <Res extends unknown, RequestBody extends unknown>(
+  <Res extends ResponseData, RequestBody extends unknown>(
     config: {
       authenticator?: never;
       validator: ValidatorFunction<RequestBody>;
@@ -52,7 +53,7 @@ export type EndpointCreationFunction<Path extends string, Method extends RestMet
   ): ValidatedRoute<Path, Method, Res, RequestBody, undefined>;
 
   // Validated route: no auth, with query
-  <Res extends unknown, RequestBody extends unknown, Query extends unknown>(
+  <Res extends ResponseData, RequestBody extends unknown, Query extends unknown>(
     config: {
       authenticator?: never;
       validator: ValidatorFunction<RequestBody>;
@@ -65,7 +66,7 @@ export type EndpointCreationFunction<Path extends string, Method extends RestMet
   ): ValidatedRoute<Path, Method, Res, RequestBody, Query>;
 
   // Full route: auth + body validation, no query
-  <Res extends unknown, RequestBody extends unknown, Auth extends Authentication>(
+  <Res extends ResponseData, RequestBody extends unknown, Auth extends Authentication>(
     config: {
       authenticator: AuthenticationFunction<Auth>;
       validator: ValidatorFunction<RequestBody>;
@@ -76,7 +77,7 @@ export type EndpointCreationFunction<Path extends string, Method extends RestMet
 
   // Full route: auth + body validation, with query
   <
-    Res extends unknown,
+    Res extends ResponseData,
     RequestBody extends unknown,
     Auth extends Authentication,
     Query extends unknown,
@@ -106,7 +107,7 @@ export type EndpointCreationFunction<Path extends string, Method extends RestMet
  */
 export type GetEndpointCreationFunction<Path extends string, Method extends RestMethod> = {
   // Open route: no auth, no query
-  <Res extends unknown>(
+  <Res extends ResponseData>(
     config: {
       authenticator?: never;
       queryValidator?: never;
@@ -115,7 +116,7 @@ export type GetEndpointCreationFunction<Path extends string, Method extends Rest
   ): OpenRoute<Path, Method, Res, undefined>;
 
   // Open route: no auth, with query
-  <Res extends unknown, Query extends unknown>(
+  <Res extends ResponseData, Query extends unknown>(
     config: {
       authenticator?: never;
       queryValidator: ValidatorFunction<Query>;
@@ -124,7 +125,7 @@ export type GetEndpointCreationFunction<Path extends string, Method extends Rest
   ): OpenRoute<Path, Method, Res, Query>;
 
   // Authenticated route: auth, no query
-  <Res extends unknown, Auth extends Authentication>(
+  <Res extends ResponseData, Auth extends Authentication>(
     config: {
       authenticator: AuthenticationFunction<Auth>;
       queryValidator?: never;
@@ -133,7 +134,7 @@ export type GetEndpointCreationFunction<Path extends string, Method extends Rest
   ): AuthenticatedRoute<Path, Method, Res, Auth, undefined>;
 
   // Authenticated route: auth, with query
-  <Res extends unknown, Auth extends Authentication, Query extends unknown>(
+  <Res extends ResponseData, Auth extends Authentication, Query extends unknown>(
     config: {
       authenticator: AuthenticationFunction<Auth>;
       queryValidator: ValidatorFunction<Query>;

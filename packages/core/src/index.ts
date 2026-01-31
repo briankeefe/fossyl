@@ -17,6 +17,8 @@ export type {
 // Route types
 export type {
   Authentication,
+  ResponseData,
+  ApiResponse,
   OpenRoute,
   AuthenticatedRoute,
   ValidatedRoute,

@@ -1,5 +1,6 @@
 import {
   Authentication,
+  ResponseData,
   FullRoute,
   ValidatedRoute,
   AuthenticatedRoute,
@@ -24,21 +25,21 @@ import { Params } from "./types/params.types";
 
 function createEndpoint<Path extends string>(path: Path): Endpoint<Path> {
   function createNoBodyMethod<Method extends "GET" | "DELETE">(method: Method) {
-    function noBodyMethod<Res extends unknown>(config: {
+    function noBodyMethod<Res extends ResponseData>(config: {
       authenticator?: never;
       queryValidator?: never;
       handler: (params: { url: Params<Path> }) => Promise<Res>;
     }): OpenRoute<Path, Method, Res, undefined>;
 
     // Open route: no auth, with query
-    function noBodyMethod<Res extends unknown, Query extends unknown>(config: {
+    function noBodyMethod<Res extends ResponseData, Query extends unknown>(config: {
       authenticator?: never;
       queryValidator: ValidatorFunction<Query>;
       handler: (params: { url: Params<Path>; query: Query }) => Promise<Res>;
     }): OpenRoute<Path, Method, Res, Query>;
 
     // Authenticated route: auth, no query
-    function noBodyMethod<Res extends unknown, Auth extends Authentication>(config: {
+    function noBodyMethod<Res extends ResponseData, Auth extends Authentication>(config: {
       authenticator: AuthenticationFunction<Auth>;
       queryValidator?: never;
       handler: (params: { url: Params<Path> }, auth: Auth) => Promise<Res>;
@@ -46,7 +47,7 @@ function createEndpoint<Path extends string>(path: Path): Endpoint<Path> {
 
     // Authenticated route: auth, with query
     function noBodyMethod<
-      Res extends unknown,
+      Res extends ResponseData,
       Auth extends Authentication,
       Query extends unknown,
     >(config: {
@@ -94,7 +95,7 @@ function createEndpoint<Path extends string>(path: Path): Endpoint<Path> {
 
   function createBodyMethod<Method extends "POST" | "PUT">(method: Method) {
     // Validated route: no auth, no query
-    function bodyMethod<Res extends unknown, RequestBody extends unknown>(config: {
+    function bodyMethod<Res extends ResponseData, RequestBody extends unknown>(config: {
       authenticator?: never;
       validator: ValidatorFunction<RequestBody>;
       queryValidator?: never;
@@ -103,7 +104,7 @@ function createEndpoint<Path extends string>(path: Path): Endpoint<Path> {
 
     // Validated route: no auth, with query
     function bodyMethod<
-      Res extends unknown,
+      Res extends ResponseData,
       RequestBody extends unknown,
       Query extends unknown,
     >(config: {
@@ -115,7 +116,7 @@ function createEndpoint<Path extends string>(path: Path): Endpoint<Path> {
 
     // Full route: auth + body validation, no query
     function bodyMethod<
-      Res extends unknown,
+      Res extends ResponseData,
       RequestBody extends unknown,
       Auth extends Authentication,
     >(config: {
@@ -127,7 +128,7 @@ function createEndpoint<Path extends string>(path: Path): Endpoint<Path> {
 
     // Full route: auth + body validation, with query
     function bodyMethod<
-      Res extends unknown,
+      Res extends ResponseData,
       RequestBody extends unknown,
       Auth extends Authentication,
       Query extends unknown,

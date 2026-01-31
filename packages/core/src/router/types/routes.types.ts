@@ -75,6 +75,47 @@ export function bodyWrapper<T>(body: T): T & RequestBody {
 export type RestMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 /**
+ * Base constraint for all response types.
+ *
+ * All data returned from route handlers must include a `typeName` property
+ * that identifies the response type. This enables:
+ * - Self-describing API responses
+ * - Easy ESLint enforcement
+ * - Type extraction for ApiResponse wrapper
+ *
+ * @example
+ * type User = {
+ *   typeName: 'User';
+ *   id: string;
+ *   name: string;
+ * };
+ */
+export type ResponseData<TypeName extends string = string> = {
+  typeName: TypeName;
+};
+
+/**
+ * Standard API response wrapper.
+ *
+ * All fossyl route responses are wrapped in this format for consistency.
+ * The adapter extracts `typeName` from the data and includes it in the wrapper.
+ *
+ * @example
+ * // Handler returns: { typeName: 'User', id: '123', name: 'John' }
+ * // Client receives:
+ * {
+ *   success: "true",
+ *   type: "User",
+ *   data: { typeName: 'User', id: '123', name: 'John' }
+ * }
+ */
+export type ApiResponse<T extends ResponseData> = {
+  success: "true";
+  type: T["typeName"];
+  data: T;
+};
+
+/**
  * Open routes are completely open - no authentication or validation required.
  *
  * Handler receives: (params: { url, query })
@@ -89,7 +130,7 @@ export type RestMethod = "GET" | "POST" | "PUT" | "DELETE";
 export type OpenRoute<
   Path extends string,
   Method extends RestMethod,
-  Res extends unknown,
+  Res extends ResponseData,
   Query extends unknown | undefined = undefined,
 > = {
   type: "open";
@@ -116,7 +157,7 @@ export type OpenRoute<
 export type AuthenticatedRoute<
   Path extends string,
   Method extends RestMethod,
-  Res extends unknown,
+  Res extends ResponseData,
   Auth extends Authentication,
   Query extends unknown | undefined = undefined,
 > = {
@@ -150,7 +191,7 @@ export type AuthenticatedRoute<
 export type ValidatedRoute<
   Path extends string,
   Method extends RestMethod,
-  Res extends unknown,
+  Res extends ResponseData,
   RequestBody extends unknown,
   Query extends unknown | undefined = undefined,
 > = {
@@ -187,7 +228,7 @@ export type ValidatedRoute<
 export type FullRoute<
   Path extends string,
   Method extends RestMethod,
-  Res extends unknown,
+  Res extends ResponseData,
   RequestBody extends unknown,
   Auth extends Authentication,
   Query extends unknown | undefined = undefined,
@@ -220,7 +261,7 @@ export type FullRoute<
  * Used by adapters and CLI for route processing.
  */
 export type Route =
-  | OpenRoute<string, RestMethod, unknown, unknown>
-  | AuthenticatedRoute<string, RestMethod, unknown, Authentication, unknown>
-  | ValidatedRoute<string, RestMethod, unknown, unknown, unknown>
-  | FullRoute<string, RestMethod, unknown, unknown, Authentication, unknown>;
+  | OpenRoute<string, RestMethod, ResponseData, unknown>
+  | AuthenticatedRoute<string, RestMethod, ResponseData, Authentication, unknown>
+  | ValidatedRoute<string, RestMethod, ResponseData, unknown, unknown>
+  | FullRoute<string, RestMethod, ResponseData, unknown, Authentication, unknown>;
