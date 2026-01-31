@@ -1,17 +1,6 @@
 import type { FrameworkAdapter, DatabaseAdapter, ValidationAdapter } from './adapters';
 
 /**
- * Validation options for route checking.
- */
-export type ValidationOptions = {
-  /** Required prefix for all routes (e.g., '/api') */
-  requirePrefix?: string;
-
-  /** Enforce that routes in same file share prefix */
-  enforceFilePrefix?: boolean;
-};
-
-/**
  * Adapter configuration for fossyl.
  */
 export type AdaptersConfig = {
@@ -28,7 +17,7 @@ export type AdaptersConfig = {
 /**
  * Fossyl configuration type.
  *
- * Used in `fossyl.config.ts` to configure the CLI and code generation.
+ * Used in `fossyl.config.ts` to configure the CLI and runtime adapters.
  *
  * @example
  * ```typescript
@@ -38,7 +27,6 @@ export type AdaptersConfig = {
  *
  * export default defineConfig({
  *   routes: './src/routes',
- *   output: './src/server.generated.ts',
  *   adapters: {
  *     framework: expressAdapter({ cors: true }),
  *   },
@@ -49,14 +37,8 @@ export type FossylConfig = {
   /** Path to routes directory or file */
   routes: string;
 
-  /** Output path for generated code */
-  output: string;
-
   /** Adapter configuration */
   adapters: AdaptersConfig;
-
-  /** Validation options */
-  validation?: ValidationOptions;
 };
 
 /**
@@ -73,7 +55,6 @@ export type FossylConfig = {
  *
  * export default defineConfig({
  *   routes: './src/routes',
- *   output: './src/server.generated.ts',
  *   adapters: {
  *     framework: expressAdapter(),
  *   },

@@ -6,74 +6,52 @@ import type { Route } from './router/types/routes.types';
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 /**
- * Route with metadata for CLI/code generation.
- * Contains the route definition plus source file tracking.
- */
-export type RouteInfo = {
-  route: Route;
-  sourceFile: string;
-  exportName: string;
-};
-
-/**
- * Context passed to framework adapters during code generation.
- */
-export type GeneratorContext = {
-  outputPath: string;
-  routesPath: string;
-  databaseAdapter?: DatabaseAdapter;
-};
-
-/**
- * Dev server control interface.
- */
-export type DevServer = {
-  start: () => Promise<void>;
-  stop: () => Promise<void>;
-  reload: () => Promise<void>;
-};
-
-/**
- * Dev server configuration options.
- */
-export type DevServerOptions = {
-  port: number;
-  routesPath: string;
-};
-
-/**
  * Framework adapter type (Express, Hono, etc.)
  *
- * Framework adapters generate TypeScript code from fossyl routes.
- * They implement the code generation strategy for a specific HTTP framework.
+ * Framework adapters register fossyl routes with an HTTP framework at runtime.
+ * They handle the mapping between fossyl route definitions and framework-specific
+ * request/response handling.
  *
  * @example
  * ```typescript
  * import { expressAdapter } from '@fossyl/express';
  *
- * export default defineConfig({
- *   adapters: {
- *     framework: expressAdapter({ cors: true }),
- *   },
- * });
+ * const app = expressAdapter({ cors: true });
+ * app.register(routes);
+ * app.listen(3000);
  * ```
  */
-export type FrameworkAdapter = {
+export type FrameworkAdapter<TApp = unknown> = {
   type: 'framework';
   name: string;
 
-  /** Generate TypeScript code from routes */
-  generate: (routes: RouteInfo[], ctx: GeneratorContext) => string;
+  /** The underlying framework app instance (Express app, Hono instance, etc.) */
+  app: TApp;
 
-  /** Optional: Create dev server for hot reload */
-  createDevServer?: (routes: RouteInfo[], options: DevServerOptions) => DevServer;
+  /** Register fossyl routes with the framework */
+  register: (routes: Route[]) => void;
+
+  /** Start the server */
+  listen: (port: number) => Promise<void>;
+
+  /** Stop the server */
+  close: () => Promise<void>;
+};
+
+/**
+ * Database context passed to route handlers.
+ */
+export type DatabaseContext<TClient = unknown> = {
+  client: TClient;
+  inTransaction: boolean;
 };
 
 /**
  * Database adapter type (Prisma-Kysely, Drizzle, etc.)
  *
  * Database adapters provide automatic transaction handling
- * and emit setup/wrapper code for the generated server.
+ * at runtime. They wrap route handlers to provide database
+ * context and optional transaction management.
  *
  * @example
  * ```typescript
@@ -82,19 +60,19 @@ export type FrameworkAdapter = {
  * export default defineConfig({
  *   adapters: {
  *     database: prismaKyselyAdapter({
- *       kysely: './src/lib/db',
+ *       client: db,
  *       autoMigrate: true,
  *     }),
  *   },
  * });
  * ```
  */
-export type DatabaseAdapter = {
+export type DatabaseAdapter<TClient = unknown> = {
   type: 'database';
   name: string;
 
-  /** Path to database client module */
-  clientPath: string;
+  /** Database client instance */
+  client: TClient;
 
   /** Whether routes use transactions by default */
   defaultTransaction: boolean;
@@ -102,14 +80,18 @@ export type DatabaseAdapter = {
   /** Auto-run migrations on startup */
   autoMigrate: boolean;
 
-  /** Emit setup code (imports, context creation) */
-  emitSetup: () => string;
+  /** Called once when server starts (run migrations, etc.) */
+  onStartup: () => Promise<void>;
 
-  /** Emit wrapper code for transaction handling */
-  emitWrapper: (handlerCode: string, useTransaction: boolean) => string;
+  /** Wrap a handler with transaction support */
+  withTransaction: <T>(
+    fn: (ctx: DatabaseContext<TClient>) => Promise<T>
+  ) => Promise<T>;
 
-  /** Emit startup code (migrations, etc.) */
-  emitStartup: () => string;
+  /** Execute without transaction (just provides client context) */
+  withClient: <T>(
+    fn: (ctx: DatabaseContext<TClient>) => Promise<T>
+  ) => Promise<T>;
 };
 
 /**

@@ -3,17 +3,14 @@ export { createRouter } from "./router/router";
 
 // Config
 export { defineConfig } from "./config";
-export type { FossylConfig, ValidationOptions, AdaptersConfig } from "./config";
+export type { FossylConfig, AdaptersConfig } from "./config";
 
 // Adapter types
 export type {
   FrameworkAdapter,
   DatabaseAdapter,
+  DatabaseContext,
   ValidationAdapter,
-  GeneratorContext,
-  DevServer,
-  DevServerOptions,
-  RouteInfo,
   HttpMethod,
 } from "./adapters";
 
