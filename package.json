@@ -17,7 +17,7 @@
   },
   "keywords": [],
   "author": "YoyoSaur",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "packageManager": "pnpm@10.12.1",
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
