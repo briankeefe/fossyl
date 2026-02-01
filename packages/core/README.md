@@ -26,64 +26,89 @@ Fossyl is a type-safe REST API framework built with TypeScript, specifically des
 - **Authentication Support**: Type-safe authentication with custom authentication functions
 - **AI-First Development**: Designed for seamless integration with AI coding assistants
 
-## Installation
+## Getting Started
+
+The easiest way to start a new Fossyl project is with the CLI:
 
 ```bash
-npm install fossyl
+npx @fossyl/core --create my-api
+```
+
+This will prompt you to select:
+- **Server adapter**: Express (recommended) or Bring Your Own
+- **Validation library**: Zod (recommended) or Bring Your Own
+- **Database adapter**: Kysely (recommended) or Bring Your Own
+
+Then install dependencies and start the dev server:
+
+```bash
+cd my-api
+pnpm install
+pnpm dev
+```
+
+Your API will be running at `http://localhost:3000` with a sample ping feature demonstrating all route types.
+
+## Manual Installation
+
+If you prefer to set up manually:
+
+```bash
+npm install @fossyl/core
 # or
-pnpm add fossyl
+pnpm add @fossyl/core
 # or
-yarn add fossyl
+yarn add @fossyl/core
 ```
 
 ## Quick Start
 
 ```typescript
-import { createRouter, authWrapper } from 'fossyl';
+import { createRouter, authWrapper } from '@fossyl/core';
 
-// Create a router
-const router = createRouter();
+// Create a router with optional base path
+const router = createRouter('/api');
 
 // Define routes with full type safety
-const userRoute = router.endpoint('/users/:id').get({
+const userRoute = router.createEndpoint('/users/:id').get({
   handler: async ({ url }) => {
     const userId = url.id; // Fully typed!
-    return { id: userId, name: 'John Doe' };
+    return { typeName: 'User' as const, id: userId, name: 'John Doe' };
   }
 });
 
 // Routes with authentication (must be async for OAuth, JWT, etc.)
-const authenticatedRoute = router.endpoint('/protected').get({
+const authenticatedRoute = router.createEndpoint('/protected').get({
   authenticator: async (headers) => {
     // Your async auth logic here (OAuth, JWT verification, DB lookup, etc.)
     return authWrapper({ userId: headers['user-id'] });
   },
   handler: async ({ url }, auth) => {
     // auth is fully typed based on your authenticator!
-    return { message: `Hello, user ${auth.userId}` };
+    return { typeName: 'Message' as const, message: `Hello, user ${auth.userId}` };
   }
 });
 
 // Routes with request body validation
-const createUserRoute = router.endpoint('/users').post({
-  bodyValidator: (data) => {
+const createUserRoute = router.createEndpoint('/users').post({
+  validator: (data): { name: string; email: string } => {
     // Your validation logic here
     return data as { name: string; email: string };
   },
-  handler: async ({ url, body }) => {
+  handler: async ({ url }, body) => {
     // body is fully typed based on your validator!
-    return { id: '123', ...body };
+    return { typeName: 'User' as const, id: '123', ...body };
   }
 });
 
 // Routes with query parameters
-const searchRoute = router.endpoint('/search').get({
-  queryValidator: (data) => {
+const searchRoute = router.createEndpoint('/search').get({
+  queryValidator: (data): { q: string; limit?: number } => {
     return data as { q: string; limit?: number };
   },
   handler: async ({ url, query }) => {
     // query is fully typed!
-    return { results: [], query: query.q };
+    return { typeName: 'SearchResults' as const, results: [], query: query.q };
   }
 });
 ```

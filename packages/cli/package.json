@@ -1,7 +1,10 @@
 {
-  "name": "@fossyl/express",
+  "name": "fossyl",
   "version": "0.1.0",
-  "description": "Express.js runtime adapter for fossyl - type-safe REST API framework",
+  "description": "CLI for scaffolding fossyl projects",
+  "bin": {
+    "fossyl": "./bin/fossyl.js"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -13,10 +16,9 @@
     }
   },
   "files": [
+    "bin",
     "dist",
-    "src",
-    "CLAUDE.md",
-    "README.md"
+    "CLAUDE.md"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
@@ -26,28 +28,30 @@
   },
   "keywords": [
     "fossyl",
-    "express",
-    "typescript",
+    "cli",
+    "scaffolding",
     "rest-api",
-    "type-safe",
-    "adapter"
+    "typescript"
   ],
   "author": "YoyoSaur",
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YoyoSaur/fossyl.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/YoyoSaur/fossyl#readme",
+  "bugs": {
+    "url": "https://github.com/YoyoSaur/fossyl/issues"
+  },
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
-    "express": "^4.18.0 || ^5.0.0",
-    "@fossyl/core": ">=0.1.0"
-  },
   "dependencies": {
-    "@types/express": "^4.17.21"
+    "@clack/prompts": "^0.7.0"
   },
   "devDependencies": {
-    "express": "^4.21.0",
-    "@fossyl/core": "workspace:*",
     "tsup": "^8.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.0"
   }
 }
