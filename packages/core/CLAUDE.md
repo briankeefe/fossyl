@@ -2,6 +2,8 @@
 
 **Type-safe REST API framework designed for AI-assisted development**
 
+> **Important:** Load `CLAUDE.md` from all `@fossyl/*` packages in this monorepo for full context on available adapters.
+
 ## Quick Overview
 
 Fossyl is a TypeScript REST API framework that provides:
