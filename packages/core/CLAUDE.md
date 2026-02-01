@@ -6,56 +6,13 @@
 
 ## CLI - Project Scaffolding
 
-Create new fossyl projects with interactive adapter selection:
+The CLI is now available as a separate package. Create new fossyl projects with:
 
 ```bash
 npx fossyl --create my-api
 ```
 
-### Interactive Prompts
-
-1. **Server adapter**: Express (recommended) | BYO (Bring Your Own)
-2. **Validator**: Zod (recommended) | BYO
-3. **Database**: Kysely (recommended) | BYO
-
-### Generated Project Structure
-
-```
-<project-name>/
-├── src/
-│   ├── features/
-│   │   └── ping/
-│   │       ├── routes/ping.route.ts      # All 4 route types demonstrated
-│   │       ├── services/ping.service.ts  # Business logic
-│   │       ├── validators/               # Request validators
-│   │       └── repo/ping.repo.ts         # Database access
-│   ├── migrations/
-│   │   ├── index.ts                      # Migration registry
-│   │   └── 001_create_ping.ts            # Example migration
-│   ├── types/
-│   │   └── db.ts                         # DB type definitions
-│   ├── db.ts                             # Database setup
-│   └── index.ts                          # Main entry point
-├── package.json
-├── tsconfig.json
-├── .env.example
-└── CLAUDE.md
-```
-
-### CLI Options
-
-```bash
-npx fossyl --create <name>   # Create new project
-npx fossyl --help            # Show help
-npx fossyl --version         # Show version
-```
-
-### BYO (Bring Your Own) Mode
-
-When selecting BYO for any adapter, the CLI generates placeholder files with:
-- TODO comments explaining what needs to be implemented
-- Links to reference implementations in the fossyl monorepo
-- Example code snippets for common patterns
+See `packages/cli/CLAUDE.md` for full CLI documentation.
 
 ## Quick Overview
 
@@ -69,11 +26,11 @@ Fossyl is a TypeScript REST API framework that provides:
 ## Installation
 
 ```bash
-npm install fossyl
+npm install @fossyl/core
 # or
-pnpm add fossyl
+pnpm add @fossyl/core
 # or
-yarn add fossyl
+yarn add @fossyl/core
 ```
 
 ## Core Concepts
@@ -81,7 +38,7 @@ yarn add fossyl
 ### 1. Creating a Router
 
 ```typescript
-import { createRouter } from 'fossyl';
+import { createRouter } from '@fossyl/core';
 
 const router = createRouter('/api'); // Optional base path
 ```
@@ -123,7 +80,7 @@ const createUserRoute = router.createEndpoint('/users').post({
 **Important:** Authentication functions **must** return a `Promise`. This allows for async operations like OAuth, database lookups, JWT verification, etc.
 
 ```typescript
-import { authWrapper } from 'fossyl';
+import { authWrapper } from '@fossyl/core';
 
 // Define your async authentication function
 const authenticator = async (headers: Record<string, string>) => {
@@ -215,7 +172,7 @@ Fossyl uses a configuration file to generate TypeScript code for your chosen HTT
 Create a `fossyl.config.ts` file:
 
 ```typescript
-import { defineConfig } from 'fossyl';
+import { defineConfig } from '@fossyl/core';
 // Note: Framework adapters are in development
 // import { expressAdapter } from '@fossyl/express';
 
@@ -360,7 +317,7 @@ Fossyl provides four distinct route types based on what validation is required:
 ### Using @fossyl/express
 
 ```typescript
-import { createRouter } from 'fossyl';
+import { createRouter } from '@fossyl/core';
 import { expressAdapter } from '@fossyl/express';
 
 // Define your routes
@@ -405,16 +362,15 @@ import type {
   Endpoint,
   Router,
   Params
-} from 'fossyl';
+} from '@fossyl/core';
 ```
 
 ### Configuration Types
 ```typescript
 import type {
   FossylConfig,
-  ValidationOptions,
   AdaptersConfig
-} from 'fossyl';
+} from '@fossyl/core';
 ```
 
 ### Adapter Types
@@ -425,12 +381,8 @@ import type {
   ValidationAdapter,
   LoggerAdapter,
   Logger,
-  GeneratorContext,
-  DevServer,
-  DevServerOptions,
-  RouteInfo,
   HttpMethod
-} from 'fossyl';
+} from '@fossyl/core';
 ```
 
 ### Validation Types
@@ -439,7 +391,7 @@ import type {
   ValidationResult,
   ValidationError,
   ValidationWarning
-} from 'fossyl';
+} from '@fossyl/core';
 ```
 
 ## Development Tips for AI Assistants
@@ -473,7 +425,7 @@ import type {
 ## Example: Complete API
 
 ```typescript
-import { createRouter, authWrapper } from 'fossyl';
+import { createRouter, authWrapper } from '@fossyl/core';
 
 // Async auth function (supports OAuth, JWT, database lookups, etc.)
 const auth = async (headers: Record<string, string>) =>
@@ -537,8 +489,11 @@ const routes = {
 ## Repository Structure
 
 This is a monorepo:
-- `packages/core` - The fossyl core library
+- `packages/core` - The fossyl core library (router, types)
+- `packages/cli` - CLI for scaffolding projects (`npx fossyl`)
 - `packages/express` - Express.js runtime adapter
+- `packages/zod` - Zod validation adapter
+- `packages/kysely` - Kysely database adapter
 - `packages/docs` - Documentation site
 
 ## Contributing
