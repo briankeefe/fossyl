@@ -4,6 +4,59 @@
 
 > **Important:** Load `CLAUDE.md` from all `@fossyl/*` packages in this monorepo for full context on available adapters.
 
+## CLI - Project Scaffolding
+
+Create new fossyl projects with interactive adapter selection:
+
+```bash
+npx fossyl --create my-api
+```
+
+### Interactive Prompts
+
+1. **Server adapter**: Express (recommended) | BYO (Bring Your Own)
+2. **Validator**: Zod (recommended) | BYO
+3. **Database**: Kysely (recommended) | BYO
+
+### Generated Project Structure
+
+```
+<project-name>/
+├── src/
+│   ├── features/
+│   │   └── ping/
+│   │       ├── routes/ping.route.ts      # All 4 route types demonstrated
+│   │       ├── services/ping.service.ts  # Business logic
+│   │       ├── validators/               # Request validators
+│   │       └── repo/ping.repo.ts         # Database access
+│   ├── migrations/
+│   │   ├── index.ts                      # Migration registry
+│   │   └── 001_create_ping.ts            # Example migration
+│   ├── types/
+│   │   └── db.ts                         # DB type definitions
+│   ├── db.ts                             # Database setup
+│   └── index.ts                          # Main entry point
+├── package.json
+├── tsconfig.json
+├── .env.example
+└── CLAUDE.md
+```
+
+### CLI Options
+
+```bash
+npx fossyl --create <name>   # Create new project
+npx fossyl --help            # Show help
+npx fossyl --version         # Show version
+```
+
+### BYO (Bring Your Own) Mode
+
+When selecting BYO for any adapter, the CLI generates placeholder files with:
+- TODO comments explaining what needs to be implemented
+- Links to reference implementations in the fossyl monorepo
+- Example code snippets for common patterns
+
 ## Quick Overview
 
 Fossyl is a TypeScript REST API framework that provides:

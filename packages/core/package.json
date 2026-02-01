@@ -13,6 +13,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "fossyl": "./bin/fossyl.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -21,6 +24,7 @@
     }
   },
   "files": [
+    "bin",
     "dist",
     "src",
     "CLAUDE.md",
@@ -28,8 +32,8 @@
     "fossyl.svg"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "build": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
   },
@@ -46,6 +50,9 @@
   "license": "GPL-3.0",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
