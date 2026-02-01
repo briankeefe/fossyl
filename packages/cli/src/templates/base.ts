@@ -2,7 +2,7 @@ import type { ProjectOptions } from '../prompts';
 
 export function generatePackageJson(options: ProjectOptions): string {
   const dependencies: Record<string, string> = {
-    '@fossyl/core': '^0.1.6',
+    '@fossyl/core': '^0.9.0',
   };
 
   const devDependencies: Record<string, string> = {
@@ -12,18 +12,18 @@ export function generatePackageJson(options: ProjectOptions): string {
   };
 
   if (options.server === 'express') {
-    dependencies['@fossyl/express'] = '^0.1.0';
+    dependencies['@fossyl/express'] = '^0.9.0';
     dependencies['express'] = '^4.21.0';
     devDependencies['@types/express'] = '^4.17.0';
   }
 
   if (options.validator === 'zod') {
-    dependencies['@fossyl/zod'] = '^0.1.0';
+    dependencies['@fossyl/zod'] = '^0.9.0';
     dependencies['zod'] = '^3.24.0';
   }
 
   if (options.database === 'kysely') {
-    dependencies['@fossyl/kysely'] = '^0.1.0';
+    dependencies['@fossyl/kysely'] = '^0.9.0';
     dependencies['kysely'] = '^0.27.0';
     dependencies['pg'] = '^8.13.0';
     devDependencies['@types/pg'] = '^8.11.0';

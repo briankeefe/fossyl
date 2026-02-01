@@ -26,7 +26,7 @@ Examples:
 }
 
 function showVersion() {
-  console.log('fossyl v0.1.0');
+  console.log('fossyl v0.9.0');
 }
 
 async function main() {

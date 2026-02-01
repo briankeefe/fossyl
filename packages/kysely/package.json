@@ -1,6 +1,6 @@
 {
   "name": "@fossyl/kysely",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "description": "Kysely runtime database adapter for fossyl - type-safe queries, transactions, and migrations",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
