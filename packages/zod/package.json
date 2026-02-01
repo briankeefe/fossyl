@@ -1,15 +1,7 @@
 {
-  "name": "@fossyl/core",
-  "version": "0.1.6",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/YoyoSaur/fossyl.git"
-  },
-  "homepage": "https://github.com/YoyoSaur/fossyl#readme",
-  "bugs": {
-    "url": "https://github.com/YoyoSaur/fossyl/issues"
-  },
-  "description": "Type-safe REST API framework core - designed for AI-assisted development",
+  "name": "@fossyl/zod",
+  "version": "0.1.0",
+  "description": "Zod validation adapter for fossyl",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -23,9 +15,7 @@
   "files": [
     "dist",
     "src",
-    "CLAUDE.md",
-    "README.md",
-    "fossyl.svg"
+    "CLAUDE.md"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
@@ -34,21 +24,32 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
+    "fossyl",
+    "zod",
+    "validation",
     "typescript",
-    "rest-api",
-    "type-safe",
-    "router",
-    "framework",
-    "ai-assisted",
-    "functional"
+    "type-safe"
   ],
   "author": "YoyoSaur",
-  "license": "GPL-3.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YoyoSaur/fossyl.git",
+    "directory": "packages/zod"
+  },
+  "homepage": "https://github.com/YoyoSaur/fossyl#readme",
+  "bugs": {
+    "url": "https://github.com/YoyoSaur/fossyl/issues"
+  },
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "zod": "^3.0.0"
+  },
   "devDependencies": {
     "tsup": "^8.0.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.0",
+    "zod": "^3.23.0"
   }
 }
