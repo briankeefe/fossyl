@@ -11,6 +11,8 @@ export type {
   DatabaseAdapter,
   DatabaseContext,
   ValidationAdapter,
+  LoggerAdapter,
+  Logger,
   HttpMethod,
 } from "./adapters";
 

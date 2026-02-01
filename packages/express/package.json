@@ -1,15 +1,7 @@
 {
-  "name": "fossyl",
-  "version": "0.1.6",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/YoyoSaur/fossyl.git"
-  },
-  "homepage": "https://github.com/YoyoSaur/fossyl#readme",
-  "bugs": {
-    "url": "https://github.com/YoyoSaur/fossyl/issues"
-  },
-  "description": "Type-safe REST API framework core - designed for AI-assisted development",
+  "name": "@fossyl/express",
+  "version": "0.1.0",
+  "description": "Express.js runtime adapter for fossyl - type-safe REST API framework",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -24,8 +16,7 @@
     "dist",
     "src",
     "CLAUDE.md",
-    "README.md",
-    "fossyl.svg"
+    "README.md"
   ],
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
@@ -34,20 +25,28 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
+    "fossyl",
+    "express",
     "typescript",
     "rest-api",
     "type-safe",
-    "router",
-    "framework",
-    "ai-assisted",
-    "functional"
+    "adapter"
   ],
   "author": "YoyoSaur",
   "license": "GPL-3.0",
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "express": "^4.18.0 || ^5.0.0",
+    "fossyl": ">=0.1.0"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.21"
+  },
   "devDependencies": {
+    "express": "^4.21.0",
+    "fossyl": "workspace:*",
     "tsup": "^8.0.0",
     "typescript": "^5.8.3"
   }

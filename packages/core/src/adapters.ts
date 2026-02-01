@@ -107,3 +107,39 @@ export type ValidationAdapter = {
   /** Format validation errors for response */
   formatError: (error: unknown) => { message: string; details?: unknown };
 };
+
+/**
+ * Logger interface returned by LoggerAdapter for each request.
+ */
+export type Logger = {
+  info: (message: string, meta?: Record<string, unknown>) => void;
+  warn: (message: string, meta?: Record<string, unknown>) => void;
+  error: (message: string, meta?: Record<string, unknown>) => void;
+};
+
+/**
+ * Logger adapter type for request logging.
+ *
+ * Logger adapters create per-request logger instances that can be
+ * used throughout the request lifecycle.
+ *
+ * @example
+ * ```typescript
+ * const pinoLogger: LoggerAdapter = {
+ *   type: 'logger',
+ *   name: 'pino',
+ *   createLogger: (requestId) => ({
+ *     info: (msg, meta) => pino.info({ requestId, ...meta }, msg),
+ *     warn: (msg, meta) => pino.warn({ requestId, ...meta }, msg),
+ *     error: (msg, meta) => pino.error({ requestId, ...meta }, msg),
+ *   }),
+ * };
+ * ```
+ */
+export type LoggerAdapter = {
+  type: 'logger';
+  name: string;
+
+  /** Create a logger instance for a specific request */
+  createLogger: (requestId: string) => Logger;
+};

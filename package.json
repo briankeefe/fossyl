@@ -2,6 +2,7 @@
   "name": "fossyl-monorepo",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "description": "Type-safe REST API framework designed for AI-assisted development",
   "scripts": {
     "build": "pnpm -r --filter './packages/*' build",
@@ -11,6 +12,7 @@
     "preview:docs": "pnpm --filter fossyl-docs preview",
     "test": "pnpm -r --filter './packages/*' test",
     "clean": "pnpm -r --filter './packages/*' clean",
+    "lint": "eslint 'packages/*/src/**/*.ts'",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "typecheck": "pnpm -r --filter './packages/*' typecheck"
@@ -22,6 +24,9 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
     "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9.39.2",
     "prettier": "^3.6.2",
     "tsup": "^8.0.0",
     "typescript": "^5.8.3"

@@ -38,7 +38,11 @@ const router = createRouter('/api'); // Optional base path
 const getUserRoute = router.createEndpoint('/users/:id').get({
   handler: async ({ url }) => {
     const userId = url.id; // Fully typed from URL params
-    return { id: userId, name: 'John Doe' };
+    return { 
+      typeName: 'User' as const,
+      id: userId, 
+      name: 'John Doe' 
+    };
   }
 });
 
@@ -50,7 +54,11 @@ const createUserRoute = router.createEndpoint('/users').post({
   },
   handler: async ({ url }, body) => {
     // body type is inferred from validator return type
-    return { id: '123', ...body };
+    return { 
+      typeName: 'User' as const,
+      id: '123', 
+      ...body 
+    };
   }
 });
 ```
@@ -78,7 +86,10 @@ const protectedRoute = router.createEndpoint('/protected').get({
   authenticator,
   handler: async ({ url }, auth) => {
     // auth is fully typed from authWrapper return
-    return { message: `Hello user ${auth.userId}` };
+    return { 
+      typeName: 'Protected' as const,
+      message: `Hello user ${auth.userId}` 
+    };
   }
 });
 ```
@@ -111,7 +122,11 @@ const searchRoute = router.createEndpoint('/search').get({
   },
   handler: async ({ url, query }) => {
     // query type is inferred from queryValidator
-    return { results: [], query: query.q };
+    return { 
+      typeName: 'SearchResult' as const,
+      results: [], 
+      query: query.q 
+    };
   }
 });
 ```
@@ -126,6 +141,7 @@ const fullRoute = router.createEndpoint('/api/resource/:id').post({
   handler: async ({ url, query }, auth, body) => {
     // All parameters are fully typed
     return {
+      typeName: 'Resource' as const,
       id: url.id,
       title: body.title,
       draft: query.draft ?? false,
@@ -164,7 +180,7 @@ export default defineConfig({
 
 ### 2. Adapter Types
 
-Fossyl supports three types of adapters:
+Fossyl supports four types of adapters:
 
 **Framework Adapters** (Required):
 ```typescript
@@ -199,6 +215,44 @@ type ValidationAdapter = {
 };
 ```
 
+**Logger Adapters** (Optional):
+```typescript
+type LoggerAdapter = {
+  type: 'logger';
+  name: string;
+  createLogger: (requestId: string) => Logger;
+};
+
+type Logger = {
+  info: (message: string, meta?: Record<string, unknown>) => void;
+  warn: (message: string, meta?: Record<string, unknown>) => void;
+  error: (message: string, meta?: Record<string, unknown>) => void;
+};
+```
+
+## Response Data Format
+
+**Important:** All route handlers must return objects with a `typeName` property for proper type inference and response formatting:
+
+```typescript
+const handler = async (params) => {
+  return {
+    typeName: 'UserResponse' as const, // Required!
+    id: '123',
+    name: 'John Doe'
+  };
+};
+```
+
+The framework will wrap your response data in a standardized format:
+```typescript
+type ApiResponse<T> = {
+  success: 'true';
+  type: T['typeName'];
+  data: T;
+};
+```
+
 ## REST Method Types
 
 Available methods: `get`, `post`, `put`, `delete`
@@ -223,32 +277,59 @@ Fossyl provides four distinct route types based on what validation is required:
 
 ### OpenRoute
 - No authentication or body validation required
-- Handler: `(params) => Promise<Response>`
+- Handler: `(params) => Promise<ResponseData>`
 - Use for: Public endpoints, health checks
 
 ### AuthenticatedRoute  
 - Requires authentication, no body validation
-- Handler: `(params, auth) => Promise<Response>`
+- Handler: `(params, auth) => Promise<ResponseData>`
 - Use for: Protected GET/DELETE endpoints
 
 ### ValidatedRoute
 - Requires body validation, no authentication  
-- Handler: `(params, body) => Promise<Response>`
+- Handler: `(params, body) => Promise<ResponseData>`
 - Use for: Public POST/PUT endpoints (e.g., registration)
 
 ### FullRoute
 - Requires both authentication and body validation
-- Handler: `(params, auth, body) => Promise<Response>`
+- Handler: `(params, auth, body) => Promise<ResponseData>`
 - Use for: Protected POST/PUT endpoints (most common)
 
 ## Adapter Libraries
 
-**Note:** Adapter libraries for popular frameworks are currently in development:
-- `@fossyl/express` - Express.js adapter (coming soon)
+**Note:** The first adapter library is now available:
+- `@fossyl/express` - Express.js runtime adapter (available now!)
 - `@fossyl/fastify` - Fastify adapter (coming soon)
 - `@fossyl/prisma-kysely` - Prisma + Kysely database adapter (coming soon)
 
-**For now, you'll need to build your own adapter** to integrate Fossyl routes with your HTTP framework. The route handlers return standard promises that resolve to response objects, making integration straightforward.
+### Using @fossyl/express
+
+```typescript
+import { createRouter } from 'fossyl';
+import { expressAdapter } from '@fossyl/express';
+
+// Define your routes
+const api = createRouter('/api');
+const routes = [
+  api.createEndpoint('/users').get({
+    handler: async () => ({ 
+      typeName: 'UserList' as const, 
+      users: [] 
+    })
+  })
+];
+
+// Create and start server
+const adapter = expressAdapter({
+  cors: true,
+  // Optional: database, logger, metrics
+});
+
+adapter.register(routes);
+await adapter.listen(3000);
+```
+
+**For other frameworks, you'll need to build your own adapter** to integrate Fossyl routes with your HTTP framework. The route handlers return standard promises that resolve to response objects, making integration straightforward.
 
 ## Type Exports
 
@@ -256,6 +337,8 @@ Fossyl provides four distinct route types based on what validation is required:
 ```typescript
 import type {
   Authentication,
+  ResponseData,
+  ApiResponse,
   OpenRoute,
   AuthenticatedRoute,
   ValidatedRoute,
@@ -285,6 +368,8 @@ import type {
   FrameworkAdapter,
   DatabaseAdapter,
   ValidationAdapter,
+  LoggerAdapter,
+  Logger,
   GeneratorContext,
   DevServer,
   DevServerOptions,
@@ -306,25 +391,29 @@ import type {
 
 1. **Type Inference**: Fossyl heavily uses TypeScript's type inference. Let the types flow naturally from validators and authenticators.
 
-2. **Validation Libraries**: Use any validation library (Zod, Yup, io-ts, etc.) in your `validator` functions. Just ensure the function returns the validated type.
+2. **Response Format**: Always include `typeName` in response objects for proper type inference and API consistency.
 
-3. **Error Messages**: Fossyl provides clear compile-time errors when REST semantics are violated (e.g., trying to add a body to a GET request).
+3. **Validation Libraries**: Use any validation library (Zod, Yup, io-ts, etc.) in your `validator` functions. Just ensure the function returns the validated type.
 
-4. **Authentication Pattern**:
+4. **Error Messages**: Fossyl provides clear compile-time errors when REST semantics are violated (e.g., trying to add a body to a GET request).
+
+5. **Authentication Pattern**:
    - Authentication functions **must** return a `Promise<T & Authentication>`
    - Always use `authWrapper()` to wrap authentication data for proper type inference
    - This enables async operations: OAuth flows, JWT verification, database lookups, etc.
    - Make your auth function `async` or explicitly return a Promise
 
-5. **Handler Parameter Order**: Pay attention to parameter order in handlers:
+6. **Handler Parameter Order**: Pay attention to parameter order in handlers:
    - Body validation routes: parameters come first, then auth (if present), then body
    - No body validation: parameters come first, then auth (if present)
 
-6. **URL Parameters**: Parameters in the route path (e.g., `:id`, `:userId`) are automatically typed and available in `url` object.
+7. **URL Parameters**: Parameters in the route path (e.g., `:id`, `:userId`) are automatically typed and available in `url` object.
 
-7. **Configuration**: Use `defineConfig()` helper for type-safe configuration with autocomplete.
+8. **Configuration**: Use `defineConfig()` helper for type-safe configuration with autocomplete.
 
-8. **Adapters**: When building custom adapters, the `Route` union type represents all possible route configurations.
+9. **Adapters**: When building custom adapters, the `Route` union type represents all possible route configurations.
+
+10. **Logger Integration**: Use the `LoggerAdapter` type to create per-request logger instances for structured logging.
 
 ## Example: Complete API
 
@@ -341,11 +430,18 @@ const api = createRouter('/api');
 // Routes
 const routes = {
   listUsers: api.createEndpoint('/users').get({
-    handler: async () => ({ users: [] })
+    handler: async () => ({ 
+      typeName: 'UserList' as const,
+      users: [] 
+    })
   }),
 
   getUser: api.createEndpoint('/users/:id').get({
-    handler: async ({ url }) => ({ id: url.id, name: 'User' })
+    handler: async ({ url }) => ({ 
+      typeName: 'User' as const,
+      id: url.id, 
+      name: 'User' 
+    })
   }),
 
   createUser: api.createEndpoint('/users').post({
@@ -353,6 +449,7 @@ const routes = {
     validator: (data): { name: string; email: string } =>
       data as { name: string; email: string },
     handler: async ({ url }, auth, body) => ({
+      typeName: 'User' as const,
       id: 'new-id',
       ...body,
       createdBy: auth.userId
@@ -364,6 +461,7 @@ const routes = {
     validator: (data): { name?: string; email?: string } =>
       data as { name?: string; email?: string },
     handler: async ({ url }, auth, body) => ({
+      typeName: 'User' as const,
       id: url.id,
       ...body,
       updatedBy: auth.userId
@@ -373,6 +471,7 @@ const routes = {
   deleteUser: api.createEndpoint('/users/:id').delete({
     authenticator: auth,
     handler: async ({ url }, auth) => ({
+      typeName: 'DeleteResult' as const,
       id: url.id,
       deleted: true
     })
@@ -384,6 +483,7 @@ const routes = {
 
 This is a monorepo:
 - `packages/core` - The fossyl core library
+- `packages/express` - Express.js runtime adapter
 - `packages/docs` - Documentation site
 
 ## Contributing
@@ -394,3 +494,5 @@ When working on this codebase:
 - Keep error messages clear and actionable
 - Test with TypeScript strict mode enabled
 - Consider adapter extensibility when adding features
+- Always include `typeName` in response objects
+- Use ESLint configuration for code quality
