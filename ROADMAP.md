@@ -15,80 +15,90 @@ Fossyl follows a **pure functional, types-only** design philosophy:
 
 ---
 
-## Phase 1: Foundation (High Priority)
-
-These tasks establish the core architecture and must be completed first.
+## ✅ Completed
 
 ### #2: Refactor validation layer to pure functional types
-**Labels:** `enhancement`, `priority:high`, `core`, `validation`
+**Status:** ✅ Complete
 
-Remove hardcoded Zod dependency. Create pure functional validator abstraction:
+Pure functional validator abstraction implemented:
 ```typescript
 export type Validator<T> = (data: unknown) => T;
-export const zodAdapter = <T>(schema: ZodType<T>): Validator<T> =>
-  (data) => schema.parse(data);
 ```
 
-**Dependencies:** None
-**Blocks:** #7, #15, #17
+Adapters available: `@fossyl/zod`
 
 ---
 
 ### #3: Write CLAUDE.md for AI-assisted development
-**Labels:** `documentation`, `priority:high`, `ai`
+**Status:** ✅ Complete
 
-Critical for AI code generation. Must include:
-- Complete CRUD template
-- All 4 route types with examples
-- Pure functional design emphasis
-- Current limitations
-
-**Dependencies:** None
-**Impact:** Enables AI to generate Fossyl code effectively
+Each package includes comprehensive `CLAUDE.md` documentation for AI code generation.
 
 ---
 
 ### #4: Write comprehensive core documentation
-**Labels:** `documentation`, `priority:high`, `core`
+**Status:** ✅ Complete
 
-Document the core library:
-- README with pure functional philosophy
-- API reference for all types
-- Type system guide
-- Design philosophy explanation
-
-**Dependencies:** #2 (validator types should be finalized)
-**Impact:** Onboarding for new contributors
+Core library documented with README and CLAUDE.md covering all route types, authentication patterns, and API reference.
 
 ---
 
 ### #5: Build Express runtime adapter
-**Labels:** `enhancement`, `priority:high`, `runtime-adapter`
+**Status:** ✅ Complete
 
-First runtime adapter - converts Fossyl routes to Express handlers.
-
-**Dependencies:** #2 (needs validator abstraction)
-**Blocks:** #11 (Express+Prisma starter)
+`@fossyl/express` package available with full route registration and server lifecycle management.
 
 ---
 
 ### #10: Set up monorepo structure with pnpm workspaces
-**Labels:** `infrastructure`, `priority:medium`
+**Status:** ✅ Complete
 
-Organize as monorepo:
+Monorepo structure:
 ```
 packages/
-├── core/
-├── validation-*/
-├── express/
-├── hono/
-└── fastify/
-starters/
-└── express-prisma/
+├── core/       # @fossyl/core - Router and types
+├── cli/        # fossyl - Scaffolding CLI
+├── express/    # @fossyl/express - Express adapter
+├── zod/        # @fossyl/zod - Zod validation adapter
+├── kysely/     # @fossyl/kysely - Kysely database adapter
+└── docs/       # Documentation site
 ```
 
-**Dependencies:** None
-**Impact:** Enables multi-package development
+---
+
+### #15: Add query parameter validation support
+**Status:** ✅ Complete
+
+Query validation implemented via `queryValidator`:
+```typescript
+queryValidator: zodQueryValidator(z.object({
+  limit: z.coerce.number().optional()
+}))
+```
+
+---
+
+### Zod validation adapter
+**Status:** ✅ Complete
+
+`@fossyl/zod` package with `zodValidator` and `zodQueryValidator` helpers.
+
+---
+
+### Kysely database adapter
+**Status:** ✅ Complete
+
+`@fossyl/kysely` package with migration support and transaction context.
+
+---
+
+### CLI package separation (2025-02-01)
+**Status:** ✅ Complete
+
+CLI moved from `@fossyl/core` to unscoped `fossyl` package:
+- Enables `npx fossyl --create my-api` (cleaner than `npx @fossyl/core`)
+- Core package stays focused on router/types
+- Independent versioning for CLI updates
 
 ---
 
@@ -112,7 +122,7 @@ export const yupAdapter = <T>(schema: yup.Schema<T>): Validator<T> => ...
 export const arkAdapter = <T>(schema: Type<T>): Validator<T> => ...
 ```
 
-**Dependencies:** #2 (validator abstraction)
+**Dependencies:** #2 (validator abstraction) ✅
 
 ---
 
@@ -135,20 +145,6 @@ export const createError = (...) => ({ ... }); // Pure function
 
 ---
 
-### #15: Add query parameter validation support
-**Labels:** `enhancement`, `validation`
-
-Runtime validation for query params:
-```typescript
-queryValidator: zodAdapter(z.object({
-  limit: z.coerce.number().optional()
-}))
-```
-
-**Dependencies:** #2 (validator abstraction)
-
----
-
 ## Phase 3: Runtime Adapters
 
 ### #8: Build Hono runtime adapter
@@ -156,7 +152,7 @@ queryValidator: zodAdapter(z.object({
 
 Hono adapter following Express pattern.
 
-**Dependencies:** #5 (reference Express implementation)
+**Dependencies:** #5 (reference Express implementation) ✅
 **Blocks:** #12 (Hono+Drizzle starter)
 
 ---
@@ -166,7 +162,7 @@ Hono adapter following Express pattern.
 
 Fastify adapter following Express pattern.
 
-**Dependencies:** #5 (reference Express implementation)
+**Dependencies:** #5 (reference Express implementation) ✅
 **Blocks:** #13 (Fastify+Kysely starter)
 
 ---
@@ -182,7 +178,7 @@ Complete opinionated starter with:
 - Error handling
 - Database integration
 
-**Dependencies:** #5 (Express adapter), #14 (error handling)
+**Dependencies:** #5 (Express adapter) ✅, #14 (error handling)
 **Impact:** Reference implementation for AI and developers
 
 ---
@@ -224,7 +220,7 @@ export type Middleware<In, Out> = (context: In) => Out | Promise<Out>;
 
 Optional dev-mode response validation.
 
-**Dependencies:** #2 (validator abstraction)
+**Dependencies:** #2 (validator abstraction) ✅
 
 ---
 
@@ -233,7 +229,7 @@ Optional dev-mode response validation.
 
 Auto-generate OpenAPI specs from route definitions.
 
-**Dependencies:** #15 (query validation for complete specs)
+**Dependencies:** #15 (query validation) ✅
 
 ---
 
@@ -281,7 +277,7 @@ export const testHandler = async <R extends Route>(route: R, params: {...}) => .
 
 Cover common questions, troubleshooting, design decisions.
 
-**Dependencies:** #4 (core docs should be complete)
+**Dependencies:** #4 (core docs) ✅
 
 ---
 
@@ -294,33 +290,7 @@ CONTRIBUTING.md with:
 - Testing requirements
 - Architecture principles
 
-**Dependencies:** #10 (monorepo structure should be established)
-
----
-
-## Suggested Implementation Order
-
-**Immediate (Weeks 1-2):**
-1. #2 - Validator refactoring (blocks many other features)
-2. #10 - Monorepo setup (enables parallel package development)
-3. #5 - Express adapter (first runtime implementation)
-4. #3 - CLAUDE.md (enables AI-assisted development)
-
-**Short-term (Weeks 3-4):**
-5. #4 - Core documentation
-6. #14 - Error handling
-7. #11 - Express+Prisma starter (reference implementation)
-8. #7 - Additional validators (Yup, ArkType)
-
-**Medium-term (Weeks 5-8):**
-9. #8, #9 - Hono and Fastify adapters
-10. #12, #13 - Additional starters
-11. #15 - Query validation
-12. #6 - Route builder customization
-
-**Future (Weeks 9+):**
-13. #16-#21 - Advanced features
-14. #1, #22 - Documentation polish
+**Dependencies:** #10 (monorepo structure) ✅
 
 ---
 
@@ -335,5 +305,4 @@ CONTRIBUTING.md with:
 
 ---
 
-Generated from conversation with Claude Code
-Last updated: 2025-11-07
+Last updated: 2025-02-01
