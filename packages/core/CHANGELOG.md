@@ -1,5 +1,11 @@
 # fossyl
 
+## 0.12.0
+
+### Minor Changes
+
+- CLEAN it up
+
 ## 0.11.0
 
 ### Minor Changes
