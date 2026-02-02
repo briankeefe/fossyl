@@ -1,4 +1,41 @@
-export function generateKyselySetup(): string {
+import type { DialectChoice } from '../prompts';
+
+export function generateKyselySetup(dialect: DialectChoice = 'postgres'): string {
+  if (dialect === 'sqlite') {
+    return `import Database from 'better-sqlite3';
+import { Kysely, SqliteDialect } from 'kysely';
+import type { DB } from './types/db';
+
+const databasePath = process.env.DATABASE_PATH || './data/app.db';
+
+export const db = new Kysely<DB>({
+  dialect: new SqliteDialect({
+    database: new Database(databasePath),
+  }),
+});
+`;
+  }
+
+  if (dialect === 'mysql') {
+    return `import { createPool } from 'mysql2';
+import { Kysely, MysqlDialect } from 'kysely';
+import type { DB } from './types/db';
+
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+
+export const db = new Kysely<DB>({
+  dialect: new MysqlDialect({
+    pool: createPool(connectionString),
+  }),
+});
+`;
+  }
+
+  // PostgreSQL (default)
   return `import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 import type { DB } from './types/db';
@@ -49,7 +86,56 @@ export const migrations = createMigrationProvider({
 `;
 }
 
-export function generatePingMigration(): string {
+export function generatePingMigration(dialect: DialectChoice = 'postgres'): string {
+  if (dialect === 'sqlite') {
+    return `import { sql } from 'kysely';
+import { defineMigration } from '@fossyl/kysely';
+
+export const migration = defineMigration({
+  async up(db) {
+    await db.schema
+      .createTable('ping')
+      .addColumn('id', 'text', (col) => col.primaryKey())
+      .addColumn('message', 'text', (col) => col.notNull())
+      .addColumn('created_by', 'text', (col) => col.notNull())
+      .addColumn('created_at', 'text', (col) =>
+        col.notNull().defaultTo(sql\`(datetime('now'))\`)
+      )
+      .execute();
+  },
+
+  async down(db) {
+    await db.schema.dropTable('ping').execute();
+  },
+});
+`;
+  }
+
+  if (dialect === 'mysql') {
+    return `import { sql } from 'kysely';
+import { defineMigration } from '@fossyl/kysely';
+
+export const migration = defineMigration({
+  async up(db) {
+    await db.schema
+      .createTable('ping')
+      .addColumn('id', 'varchar(36)', (col) => col.primaryKey())
+      .addColumn('message', 'varchar(255)', (col) => col.notNull())
+      .addColumn('created_by', 'varchar(255)', (col) => col.notNull())
+      .addColumn('created_at', 'timestamp', (col) =>
+        col.notNull().defaultTo(sql\`CURRENT_TIMESTAMP\`)
+      )
+      .execute();
+  },
+
+  async down(db) {
+    await db.schema.dropTable('ping').execute();
+  },
+});
+`;
+  }
+
+  // PostgreSQL (default)
   return `import { sql } from 'kysely';
 import { defineMigration } from '@fossyl/kysely';
 

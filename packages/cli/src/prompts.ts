@@ -3,12 +3,15 @@ import * as p from '@clack/prompts';
 export type ServerChoice = 'express' | 'byo';
 export type ValidatorChoice = 'zod' | 'byo';
 export type DatabaseChoice = 'kysely' | 'byo';
+export type DialectChoice = 'sqlite' | 'postgres' | 'mysql';
 
 export interface ProjectOptions {
   name: string;
   server: ServerChoice;
   validator: ValidatorChoice;
   database: DatabaseChoice;
+  dialect?: DialectChoice;
+  docker: boolean;
 }
 
 export async function promptForOptions(
@@ -68,5 +71,32 @@ export async function promptForOptions(
     return null;
   }
 
-  return { name, server, validator, database };
+  let dialect: DialectChoice | undefined;
+  if (database === 'kysely') {
+    dialect = (await p.select({
+      message: 'Database dialect:',
+      options: [
+        { value: 'sqlite', label: 'SQLite', hint: 'recommended - great for per-customer databases' },
+        { value: 'postgres', label: 'PostgreSQL' },
+        { value: 'mysql', label: 'MySQL' },
+      ],
+    })) as DialectChoice;
+
+    if (p.isCancel(dialect)) {
+      p.cancel('Operation cancelled.');
+      return null;
+    }
+  }
+
+  const docker = await p.confirm({
+    message: 'Include Docker setup?',
+    initialValue: true,
+  });
+
+  if (p.isCancel(docker)) {
+    p.cancel('Operation cancelled.');
+    return null;
+  }
+
+  return { name, server, validator, database, dialect, docker };
 }

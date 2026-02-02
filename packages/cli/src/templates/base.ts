@@ -1,5 +1,32 @@
 import type { ProjectOptions } from '../prompts';
 
+export function generateReadme(options: ProjectOptions): string {
+  return `# ${options.name === '.' ? 'my-fossyl-api' : options.name}
+
+A REST API built with [fossyl](https://github.com/YoyoSaur/fossyl).
+
+## Documentation
+
+See the main fossyl documentation at [packages/core](https://github.com/YoyoSaur/fossyl/tree/main/packages/core).
+
+## AI Development
+
+This project includes a \`CLAUDE.md\` file for AI-assisted development. For additional context, include the CLAUDE.md files from the @fossyl packages you're using:
+
+- [@fossyl/core](https://github.com/YoyoSaur/fossyl/blob/main/packages/core/CLAUDE.md)
+- [@fossyl/express](https://github.com/YoyoSaur/fossyl/blob/main/packages/express/CLAUDE.md)
+- [@fossyl/zod](https://github.com/YoyoSaur/fossyl/blob/main/packages/zod/CLAUDE.md)
+- [@fossyl/kysely](https://github.com/YoyoSaur/fossyl/blob/main/packages/kysely/CLAUDE.md)
+
+## Quick Start
+
+\`\`\`bash
+pnpm install
+pnpm dev
+\`\`\`
+`;
+}
+
 export function generatePackageJson(options: ProjectOptions): string {
   const dependencies: Record<string, string> = {
     '@fossyl/core': '^0.9.0',
@@ -25,8 +52,17 @@ export function generatePackageJson(options: ProjectOptions): string {
   if (options.database === 'kysely') {
     dependencies['@fossyl/kysely'] = '^0.9.0';
     dependencies['kysely'] = '^0.27.0';
-    dependencies['pg'] = '^8.13.0';
-    devDependencies['@types/pg'] = '^8.11.0';
+
+    if (options.dialect === 'sqlite') {
+      dependencies['better-sqlite3'] = '^11.0.0';
+      devDependencies['@types/better-sqlite3'] = '^7.6.0';
+    } else if (options.dialect === 'mysql') {
+      dependencies['mysql2'] = '^3.11.0';
+    } else {
+      // PostgreSQL (default)
+      dependencies['pg'] = '^8.13.0';
+      devDependencies['@types/pg'] = '^8.11.0';
+    }
   }
 
   const pkg = {
@@ -73,8 +109,18 @@ PORT=3000
   if (options.database === 'kysely') {
     content += `
 # Database
-DATABASE_URL=postgres://user:password@localhost:5432/mydb
 `;
+    if (options.dialect === 'sqlite') {
+      content += `DATABASE_PATH=./data/app.db
+`;
+    } else if (options.dialect === 'mysql') {
+      content += `DATABASE_URL=mysql://user:password@localhost:3306/mydb
+`;
+    } else {
+      // PostgreSQL (default)
+      content += `DATABASE_URL=postgres://user:password@localhost:5432/mydb
+`;
+    }
   }
 
   return content;

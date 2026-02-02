@@ -2,6 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import type { ProjectOptions } from './prompts';
 import {
+  generateReadme,
   generatePackageJson,
   generateTsConfig,
   generateEnvExample,
@@ -14,6 +15,7 @@ import { generateByoDatabasePlaceholder } from './templates/database/byo';
 import { generateZodValidators } from './templates/validator/zod';
 import { generateByoValidatorPlaceholder } from './templates/validator/byo';
 import { generatePingRoute, generatePingService, generatePingRepo } from './templates/feature/ping';
+import { generateDockerfile, generateDockerignore, generateDockerCompose } from './templates/docker';
 
 export interface FileEntry {
   path: string;
@@ -24,6 +26,10 @@ export function generateFiles(options: ProjectOptions): FileEntry[] {
   const files: FileEntry[] = [];
 
   // Base files
+  files.push({
+    path: 'README.md',
+    content: generateReadme(options),
+  });
   files.push({
     path: 'package.json',
     content: generatePackageJson(options),
@@ -62,7 +68,7 @@ export function generateFiles(options: ProjectOptions): FileEntry[] {
   if (options.database === 'kysely') {
     files.push({
       path: 'src/db.ts',
-      content: generateKyselySetup(),
+      content: generateKyselySetup(options.dialect),
     });
     files.push({
       path: 'src/types/db.ts',
@@ -74,7 +80,7 @@ export function generateFiles(options: ProjectOptions): FileEntry[] {
     });
     files.push({
       path: 'src/migrations/001_create_ping.ts',
-      content: generatePingMigration(),
+      content: generatePingMigration(options.dialect),
     });
   } else {
     files.push({
@@ -113,6 +119,22 @@ export function generateFiles(options: ProjectOptions): FileEntry[] {
     path: 'src/features/ping/repo/ping.repo.ts',
     content: generatePingRepo(options),
   });
+
+  // Docker files
+  if (options.docker) {
+    files.push({
+      path: 'Dockerfile',
+      content: generateDockerfile(),
+    });
+    files.push({
+      path: '.dockerignore',
+      content: generateDockerignore(),
+    });
+    files.push({
+      path: 'docker-compose.yml',
+      content: generateDockerCompose(options.dialect),
+    });
+  }
 
   return files;
 }
