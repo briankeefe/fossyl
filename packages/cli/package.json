@@ -31,7 +31,15 @@
     "cli",
     "scaffolding",
     "rest-api",
-    "typescript"
+    "typescript",
+    "generator",
+    "project-generator",
+    "create-app",
+    "starter",
+    "boilerplate",
+    "api-generator",
+    "nodejs",
+    "backend"
   ],
   "author": "YoyoSaur",
   "license": "GPL-3.0",

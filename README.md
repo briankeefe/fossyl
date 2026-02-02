@@ -1,5 +1,9 @@
 # Fossyl
 
+[![npm version](https://img.shields.io/npm/v/@fossyl/core.svg)](https://www.npmjs.com/package/@fossyl/core)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
+
 **Type-safe REST API framework designed for AI-assisted development**
 
 Fossyl provides full type inference for routes, parameters, and responses with REST semantics enforcement at compile-time.

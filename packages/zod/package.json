@@ -28,7 +28,12 @@
     "zod",
     "validation",
     "typescript",
-    "type-safe"
+    "type-safe",
+    "schema",
+    "validator",
+    "type-inference",
+    "runtime-validation",
+    "api-validation"
   ],
   "author": "YoyoSaur",
   "license": "MIT",

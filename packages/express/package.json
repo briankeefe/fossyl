@@ -39,7 +39,16 @@
     "typescript",
     "rest-api",
     "type-safe",
-    "adapter"
+    "adapter",
+    "expressjs",
+    "middleware",
+    "server",
+    "http",
+    "nodejs",
+    "backend",
+    "cors",
+    "routing",
+    "web-framework"
   ],
   "author": "YoyoSaur",
   "license": "GPL-3.0",

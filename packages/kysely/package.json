@@ -41,7 +41,14 @@
     "type-safe",
     "adapter",
     "transactions",
-    "migrations"
+    "migrations",
+    "sql",
+    "orm",
+    "query-builder",
+    "postgres",
+    "mysql",
+    "sqlite",
+    "nodejs"
   ],
   "author": "YoyoSaur",
   "license": "GPL-3.0",
