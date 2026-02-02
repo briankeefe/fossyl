@@ -1,6 +1,6 @@
 {
   "name": "fossyl",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "CLI for scaffolding fossyl projects",
   "bin": {
     "fossyl": "./bin/fossyl.js"

@@ -103,7 +103,7 @@ export function generatePingService(_options: ProjectOptions): string {
   return `import * as pingRepo from '../repo/ping.repo';
 
 export interface PingData {
-  id: string;
+  id: number;
   message: string;
   created_by: string;
   created_at: Date;
@@ -181,7 +181,7 @@ export async function findById(id: string): Promise<Ping | undefined> {
   const db = getTransaction<DB>();
   return db
     .selectFrom('ping')
-    .where('id', '=', id)
+    .where('id', '=', Number(id))
     .selectAll()
     .executeTakeFirst();
 }
@@ -200,14 +200,14 @@ export async function update(id: string, data: PingUpdate): Promise<Ping> {
   return db
     .updateTable('ping')
     .set(data)
-    .where('id', '=', id)
+    .where('id', '=', Number(id))
     .returningAll()
     .executeTakeFirstOrThrow();
 }
 
 export async function remove(id: string): Promise<void> {
   const db = getTransaction<DB>();
-  await db.deleteFrom('ping').where('id', '=', id).execute();
+  await db.deleteFrom('ping').where('id', '=', Number(id)).execute();
 }
 `;
 }
@@ -221,14 +221,15 @@ function generateByoPingRepo(): string {
  */
 
 export interface Ping {
-  id: string;
+  id: number;
   message: string;
   created_by: string;
   created_at: Date;
 }
 
 // In-memory store for demo purposes - replace with actual database
-const pings: Map<string, Ping> = new Map();
+const pings: Map<number, Ping> = new Map();
+let nextId = 1;
 
 export async function findAll(limit: number, offset: number): Promise<Ping[]> {
   // TODO: Replace with actual database query
@@ -238,13 +239,13 @@ export async function findAll(limit: number, offset: number): Promise<Ping[]> {
 
 export async function findById(id: string): Promise<Ping | undefined> {
   // TODO: Replace with actual database query
-  return pings.get(id);
+  return pings.get(Number(id));
 }
 
 export async function create(data: { message: string; created_by: string }): Promise<Ping> {
   // TODO: Replace with actual database insert
   const ping: Ping = {
-    id: crypto.randomUUID(),
+    id: nextId++,
     message: data.message,
     created_by: data.created_by,
     created_at: new Date(),
@@ -255,18 +256,19 @@ export async function create(data: { message: string; created_by: string }): Pro
 
 export async function update(id: string, data: { message?: string }): Promise<Ping> {
   // TODO: Replace with actual database update
-  const existing = pings.get(id);
+  const numId = Number(id);
+  const existing = pings.get(numId);
   if (!existing) {
     throw new Error('Not found');
   }
   const updated = { ...existing, ...data };
-  pings.set(id, updated);
+  pings.set(numId, updated);
   return updated;
 }
 
 export async function remove(id: string): Promise<void> {
   // TODO: Replace with actual database delete
-  pings.delete(id);
+  pings.delete(Number(id));
 }
 `;
 }

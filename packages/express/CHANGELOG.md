@@ -1,5 +1,16 @@
 # @fossyl/express
 
+## 2.0.0
+
+### Minor Changes
+
+- CLI fixes
+
+### Patch Changes
+
+- Updated dependencies
+  - @fossyl/core@0.11.0
+
 ## 1.0.0
 
 ### Minor Changes

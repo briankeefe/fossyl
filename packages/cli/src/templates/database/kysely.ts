@@ -59,7 +59,7 @@ export function generateDbTypes(): string {
 
 // Ping table types
 export interface PingTable {
-  id: Generated<string>;
+  id: Generated<number>;
   message: string;
   created_by: string;
   created_at: Generated<Date>;
@@ -95,7 +95,7 @@ export const migration = defineMigration({
   async up(db) {
     await db.schema
       .createTable('ping')
-      .addColumn('id', 'text', (col) => col.primaryKey())
+      .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
       .addColumn('message', 'text', (col) => col.notNull())
       .addColumn('created_by', 'text', (col) => col.notNull())
       .addColumn('created_at', 'text', (col) =>
@@ -119,7 +119,7 @@ export const migration = defineMigration({
   async up(db) {
     await db.schema
       .createTable('ping')
-      .addColumn('id', 'varchar(36)', (col) => col.primaryKey())
+      .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
       .addColumn('message', 'varchar(255)', (col) => col.notNull())
       .addColumn('created_by', 'varchar(255)', (col) => col.notNull())
       .addColumn('created_at', 'timestamp', (col) =>
@@ -143,9 +143,7 @@ export const migration = defineMigration({
   async up(db) {
     await db.schema
       .createTable('ping')
-      .addColumn('id', 'uuid', (col) =>
-        col.primaryKey().defaultTo(sql\`gen_random_uuid()\`)
-      )
+      .addColumn('id', 'serial', (col) => col.primaryKey())
       .addColumn('message', 'varchar(255)', (col) => col.notNull())
       .addColumn('created_by', 'varchar(255)', (col) => col.notNull())
       .addColumn('created_at', 'timestamp', (col) =>
