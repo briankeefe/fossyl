@@ -1,6 +1,6 @@
 import express, { type Application, Router, type Request, type Response, type NextFunction } from 'express';
 import type { Server } from 'node:http';
-import type { FrameworkAdapter, Route } from 'fossyl';
+import type { FrameworkAdapter, Route } from '@fossyl/core';
 import type { ExpressAdapterOptions, CorsOptions } from './types';
 import { sortRoutes } from './sorting';
 import { groupRoutes } from './register';

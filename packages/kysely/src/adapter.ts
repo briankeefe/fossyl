@@ -1,4 +1,4 @@
-import type { DatabaseAdapter, DatabaseContext } from 'fossyl';
+import type { DatabaseAdapter, DatabaseContext } from '@fossyl/core';
 import type { Kysely } from 'kysely';
 import { transactionContext } from './context';
 import { runMigrations } from './migrations';

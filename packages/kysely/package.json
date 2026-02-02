@@ -1,6 +1,15 @@
 {
   "name": "@fossyl/kysely",
   "version": "0.9.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YoyoSaur/fossyl.git",
+    "directory": "packages/kysely"
+  },
+  "homepage": "https://github.com/YoyoSaur/fossyl#readme",
+  "bugs": {
+    "url": "https://github.com/YoyoSaur/fossyl/issues"
+  },
   "description": "Kysely runtime database adapter for fossyl - type-safe queries, transactions, and migrations",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

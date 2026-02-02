@@ -1,5 +1,5 @@
 import type { Response } from 'express';
-import type { Logger } from 'fossyl';
+import type { Logger } from '@fossyl/core';
 
 declare const errorCodeBrand: unique symbol;
 

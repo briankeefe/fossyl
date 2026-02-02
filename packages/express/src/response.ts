@@ -1,4 +1,4 @@
-import type { ResponseData, ApiResponse } from 'fossyl';
+import type { ResponseData, ApiResponse } from '@fossyl/core';
 
 /**
  * Wraps handler response data in the standard API response format.

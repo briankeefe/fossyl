@@ -1,4 +1,4 @@
-import type { Route } from 'fossyl';
+import type { Route } from '@fossyl/core';
 
 /**
  * Sorts routes so static paths come before dynamic params.

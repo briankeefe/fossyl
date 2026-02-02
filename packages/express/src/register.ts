@@ -1,4 +1,4 @@
-import type { Route } from 'fossyl';
+import type { Route } from '@fossyl/core';
 
 /**
  * A group of routes that share a common prefix.

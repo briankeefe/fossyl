@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import type { DatabaseContext, Logger } from 'fossyl';
+import type { DatabaseContext, Logger } from '@fossyl/core';
 
 /**
  * Request context available throughout the request lifecycle.

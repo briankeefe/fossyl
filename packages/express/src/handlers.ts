@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction, RequestHandler } from 'express';
-import type { Route, ResponseData } from 'fossyl';
+import type { Route, ResponseData } from '@fossyl/core';
 import { requestContext, type RequestContext, createDefaultLogger } from './context';
 import { wrapResponse } from './response';
 import { handleError } from './errors';
