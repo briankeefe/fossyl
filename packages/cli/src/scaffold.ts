@@ -2,7 +2,6 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import type { ProjectOptions } from './prompts';
 import {
-  generateReadme,
   generatePackageJson,
   generateTsConfig,
   generateEnvExample,
@@ -26,10 +25,6 @@ export function generateFiles(options: ProjectOptions): FileEntry[] {
   const files: FileEntry[] = [];
 
   // Base files
-  files.push({
-    path: 'README.md',
-    content: generateReadme(options),
-  });
   files.push({
     path: 'package.json',
     content: generatePackageJson(options),

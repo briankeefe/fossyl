@@ -117,6 +117,10 @@ const searchRoute = router.createEndpoint('/search').get({
 
 For more detailed documentation, visit the [GitHub repository](https://github.com/YoyoSaur/fossyl).
 
+## AI-Assisted Development
+
+For AI-assisted development, see [CLAUDE.md](./CLAUDE.md).
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

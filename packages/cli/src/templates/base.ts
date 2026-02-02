@@ -1,32 +1,5 @@
 import type { ProjectOptions } from '../prompts';
 
-export function generateReadme(options: ProjectOptions): string {
-  return `# ${options.name === '.' ? 'my-fossyl-api' : options.name}
-
-A REST API built with [fossyl](https://github.com/YoyoSaur/fossyl).
-
-## Documentation
-
-See the main fossyl documentation at [packages/core](https://github.com/YoyoSaur/fossyl/tree/main/packages/core).
-
-## AI Development
-
-This project includes a \`CLAUDE.md\` file for AI-assisted development. For additional context, include the CLAUDE.md files from the @fossyl packages you're using:
-
-- [@fossyl/core](https://github.com/YoyoSaur/fossyl/blob/main/packages/core/CLAUDE.md)
-- [@fossyl/express](https://github.com/YoyoSaur/fossyl/blob/main/packages/express/CLAUDE.md)
-- [@fossyl/zod](https://github.com/YoyoSaur/fossyl/blob/main/packages/zod/CLAUDE.md)
-- [@fossyl/kysely](https://github.com/YoyoSaur/fossyl/blob/main/packages/kysely/CLAUDE.md)
-
-## Quick Start
-
-\`\`\`bash
-pnpm install
-pnpm dev
-\`\`\`
-`;
-}
-
 export function generatePackageJson(options: ProjectOptions): string {
   const dependencies: Record<string, string> = {
     '@fossyl/core': '^0.9.0',
