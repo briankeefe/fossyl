@@ -14,6 +14,14 @@ export interface ProjectOptions {
   docker: boolean;
 }
 
+export interface CliOptions {
+  server?: ServerChoice;
+  validator?: ValidatorChoice;
+  database?: DatabaseChoice;
+  dialect?: DialectChoice;
+  docker?: boolean;
+}
+
 export async function promptForOptions(
   projectName?: string
 ): Promise<ProjectOptions | null> {
