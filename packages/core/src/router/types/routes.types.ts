@@ -259,9 +259,11 @@ export type FullRoute<
 /**
  * Union of all route types.
  * Used by adapters and CLI for route processing.
+ * Uses `any` for generic parameters since this type is for runtime consumption
+ * where exact types aren't statically known.
  */
 export type Route =
-  | OpenRoute<string, RestMethod, ResponseData, unknown>
-  | AuthenticatedRoute<string, RestMethod, ResponseData, Authentication, unknown>
-  | ValidatedRoute<string, RestMethod, ResponseData, unknown, unknown>
-  | FullRoute<string, RestMethod, ResponseData, unknown, Authentication, unknown>;
+  | OpenRoute<string, RestMethod, ResponseData, any>
+  | AuthenticatedRoute<string, RestMethod, ResponseData, Authentication, any>
+  | ValidatedRoute<string, RestMethod, ResponseData, any, any>
+  | FullRoute<string, RestMethod, ResponseData, any, Authentication, any>;

@@ -1,6 +1,10 @@
 import { parseArgs } from 'node:util';
+import { createRequire } from 'node:module';
 import { createCommand } from './commands/create';
 import type { ServerChoice, ValidatorChoice, DatabaseChoice, DialectChoice, CliOptions } from './prompts';
+
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
 
 const { values, positionals } = parseArgs({
   options: {
@@ -59,7 +63,7 @@ Examples:
 }
 
 function showVersion() {
-  console.log('fossyl v0.12.0');
+  console.log(`fossyl v${pkg.version}`);
 }
 
 function parseCliOptions(): CliOptions | null {

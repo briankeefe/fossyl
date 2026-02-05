@@ -1,8 +1,9 @@
 import type { ProjectOptions } from '../prompts';
+import { VERSIONS } from '../versions';
 
 export function generatePackageJson(options: ProjectOptions): string {
   const dependencies: Record<string, string> = {
-    '@fossyl/core': '^0.9.0',
+    '@fossyl/core': `^${VERSIONS.core}`,
   };
 
   const devDependencies: Record<string, string> = {
@@ -12,18 +13,18 @@ export function generatePackageJson(options: ProjectOptions): string {
   };
 
   if (options.server === 'express') {
-    dependencies['@fossyl/express'] = '^0.9.0';
+    dependencies['@fossyl/express'] = `^${VERSIONS.express}`;
     dependencies['express'] = '^4.21.0';
     devDependencies['@types/express'] = '^4.17.0';
   }
 
   if (options.validator === 'zod') {
-    dependencies['@fossyl/zod'] = '^0.9.0';
+    dependencies['@fossyl/zod'] = `^${VERSIONS.zod}`;
     dependencies['zod'] = '^3.24.0';
   }
 
   if (options.database === 'kysely') {
-    dependencies['@fossyl/kysely'] = '^0.9.0';
+    dependencies['@fossyl/kysely'] = `^${VERSIONS.kysely}`;
     dependencies['kysely'] = '^0.27.0';
 
     if (options.dialect === 'sqlite') {
@@ -58,8 +59,8 @@ export function generateTsConfig(): string {
   const config = {
     compilerOptions: {
       target: 'ES2022',
-      module: 'NodeNext',
-      moduleResolution: 'NodeNext',
+      module: 'ESNext',
+      moduleResolution: 'bundler',
       esModuleInterop: true,
       strict: true,
       skipLibCheck: true,

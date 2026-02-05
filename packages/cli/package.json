@@ -1,18 +1,19 @@
 {
   "name": "fossyl",
-  "version": "0.14.0",
+  "version": "0.15.0",
+  "type": "module",
   "description": "CLI for scaffolding fossyl projects",
   "bin": {
     "fossyl": "./bin/fossyl.js"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
@@ -21,7 +22,7 @@
     "CLAUDE.md"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "node scripts/generate-versions.js && tsup src/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
