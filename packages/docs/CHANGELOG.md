@@ -1,5 +1,11 @@
 # fossyl-docs
 
+## 0.5.0
+
+### Minor Changes
+
+- Fixed some CLI stuff, also just keeping everything on the same version for now
+
 ## 0.3.0
 
 ### Minor Changes

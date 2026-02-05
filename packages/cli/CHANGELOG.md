@@ -1,5 +1,11 @@
 # fossyl
 
+## 0.16.0
+
+### Minor Changes
+
+- Fixed some CLI stuff, also just keeping everything on the same version for now
+
 ## 0.14.0
 
 ### Minor Changes
