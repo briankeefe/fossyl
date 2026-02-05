@@ -1,4 +1,4 @@
-import type { DialectChoice } from '../prompts';
+import type { DialectChoice } from '../../prompts';
 
 export function generateKyselySetup(dialect: DialectChoice = 'postgres'): string {
   if (dialect === 'sqlite') {
