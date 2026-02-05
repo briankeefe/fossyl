@@ -264,6 +264,6 @@ export type FullRoute<
  */
 export type Route =
   | OpenRoute<string, RestMethod, ResponseData, any>
-  | AuthenticatedRoute<string, RestMethod, ResponseData, Authentication, any>
+  | AuthenticatedRoute<string, RestMethod, ResponseData, any, any>
   | ValidatedRoute<string, RestMethod, ResponseData, any, any>
-  | FullRoute<string, RestMethod, ResponseData, any, Authentication, any>;
+  | FullRoute<string, RestMethod, ResponseData, any, any, any>;
