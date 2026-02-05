@@ -2,6 +2,6 @@ node_modules/
 dist/
 *.log
 .DS_Store
-.changeset/*.md
+.changeset/
 !.changeset/README.md
 .npmrc
