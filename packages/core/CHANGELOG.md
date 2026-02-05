@@ -1,5 +1,11 @@
 # fossyl
 
+## 0.14.0
+
+### Minor Changes
+
+- Fixed CLI scaffolding I think
+
 ## 0.12.0
 
 ### Minor Changes

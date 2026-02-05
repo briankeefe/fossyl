@@ -243,7 +243,7 @@ export type FullRoute<
         params: {
           url: Params<Path>;
         },
-        auth: Authentication,
+        auth: Auth,
         body: RequestBody
       ) => Promise<Res>
     : (
@@ -251,7 +251,7 @@ export type FullRoute<
           url: Params<Path>;
           query: Query;
         },
-        auth: Authentication,
+        auth: Auth,
         body: RequestBody
       ) => Promise<Res>;
 };

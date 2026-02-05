@@ -1,10 +1,7 @@
 import type { ProjectOptions } from '../../prompts';
 
 export function generateExpressIndex(options: ProjectOptions): string {
-  const imports: string[] = [
-    "import { createRouter, authWrapper } from '@fossyl/core';",
-    "import { expressAdapter } from '@fossyl/express';",
-  ];
+  const imports: string[] = ["import { expressAdapter } from '@fossyl/express';"];
 
   if (options.database === 'kysely') {
     imports.push("import { kyselyAdapter } from '@fossyl/kysely';");
@@ -12,7 +9,7 @@ export function generateExpressIndex(options: ProjectOptions): string {
     imports.push("import { migrations } from './migrations';");
   }
 
-  imports.push("import { pingRoutes } from './features/ping/routes/ping.route';");
+  imports.push("import pingRoutes from './features/ping/routes/ping.route';");
 
   const adapterConfig: string[] = [];
 
@@ -31,20 +28,6 @@ export function generateExpressIndex(options: ProjectOptions): string {
 
   return `${imports.join('\n')}
 
-// Authentication function (customize based on your auth strategy)
-export const authenticator = async (headers: Record<string, string>) => {
-  // TODO: Implement your authentication logic
-  // Example: JWT verification, OAuth validation, API key check, etc.
-  const userId = headers['x-user-id'];
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
-  return authWrapper({ userId });
-};
-
-// Create router with base path
-const api = createRouter('/api');
-
 ${adapterConfig.join('\n\n')}
 
 // Create Express adapter
@@ -53,7 +36,7 @@ const adapter = expressAdapter({
 });
 
 // Register all routes
-const routes = [...pingRoutes(api, authenticator)];
+const routes = [...pingRoutes];
 adapter.register(routes);
 
 // Start server
@@ -65,34 +48,18 @@ adapter.listen(Number(PORT)).then(() => {
 }
 
 export function generateByoServerIndex(options: ProjectOptions): string {
-  const imports: string[] = [
-    "import { createRouter, authWrapper } from '@fossyl/core';",
-    "import { startServer } from './server';",
-  ];
+  const imports: string[] = ["import { startServer } from './server';"];
 
   if (options.database === 'kysely') {
     imports.push("import { db } from './db';");
   }
 
-  imports.push("import { pingRoutes } from './features/ping/routes/ping.route';");
+  imports.push("import pingRoutes from './features/ping/routes/ping.route';");
 
   return `${imports.join('\n')}
 
-// Authentication function (customize based on your auth strategy)
-export const authenticator = async (headers: Record<string, string>) => {
-  // TODO: Implement your authentication logic
-  const userId = headers['x-user-id'];
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
-  return authWrapper({ userId });
-};
-
-// Create router with base path
-const api = createRouter('/api');
-
 // Collect all routes
-const routes = [...pingRoutes(api, authenticator)];
+const routes = [...pingRoutes];
 
 // Start server (implement in ./server.ts)
 const PORT = process.env.PORT ?? 3000;

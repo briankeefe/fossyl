@@ -99,6 +99,22 @@ PORT=3000
   return content;
 }
 
+export function generateAuth(): string {
+  return `import { authWrapper } from '@fossyl/core';
+
+// Authentication function (customize based on your auth strategy)
+export const authenticator = async (headers: Record<string, string>) => {
+  // TODO: Implement your authentication logic
+  // Example: JWT verification, OAuth validation, API key check, etc.
+  const userId = headers['x-user-id'];
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+  return authWrapper({ userId });
+};
+`;
+}
+
 export function generateClaudeMd(options: ProjectOptions): string {
   const adapterDocs: string[] = [];
 

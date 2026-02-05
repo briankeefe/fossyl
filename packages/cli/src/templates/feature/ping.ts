@@ -14,88 +14,87 @@ export function generatePingRoute(options: ProjectOptions): string {
   listPingQueryValidator,
 } from '../validators/ping.validators';`;
 
-  return `import type { Router, AuthenticationFunction } from '@fossyl/core';
+  return `import { createRouter } from '@fossyl/core';
 import * as pingService from '../services/ping.service';
+import { authenticator } from '../../../auth';
 ${validatorImport}
 
 /**
  * Ping feature routes demonstrating all 4 route types:
- * - OpenRoute: GET /api/ping (list all)
- * - OpenRoute: GET /api/ping/:id (get one)
- * - FullRoute: POST /api/ping (authenticated + validated)
- * - FullRoute: PUT /api/ping/:id (authenticated + validated)
- * - AuthenticatedRoute: DELETE /api/ping/:id (authenticated only)
+ * - OpenRoute: GET /ping (list all)
+ * - OpenRoute: GET /ping/:id (get one)
+ * - FullRoute: POST /ping (authenticated + validated)
+ * - FullRoute: PUT /ping/:id (authenticated + validated)
+ * - AuthenticatedRoute: DELETE /ping/:id (authenticated only)
  */
-export function pingRoutes<T extends { userId: string }>(
-  router: Router,
-  authenticator: AuthenticationFunction<T>
-) {
-  // OpenRoute - List all pings (public)
-  const listPings = router.createEndpoint('/ping').get({
-    queryValidator: listPingQueryValidator,
-    handler: async ({ query }) => {
-      const pings = await pingService.listPings(query.limit, query.offset);
-      return {
-        typeName: 'PingList' as const,
-        pings,
-        limit: query.limit,
-        offset: query.offset,
-      };
-    },
-  });
 
-  // OpenRoute - Get single ping (public)
-  const getPing = router.createEndpoint('/ping/:id').get({
-    handler: async ({ url }) => {
-      const ping = await pingService.getPing(url.id);
-      return {
-        typeName: 'Ping' as const,
-        ...ping,
-      };
-    },
-  });
+const router = createRouter('/ping');
 
-  // FullRoute - Create ping (authenticated + validated)
-  const createPing = router.createEndpoint('/ping').post({
-    authenticator,
-    validator: createPingValidator,
-    handler: async ({ url }, auth, body) => {
-      const ping = await pingService.createPing(body.message, auth.userId);
-      return {
-        typeName: 'Ping' as const,
-        ...ping,
-      };
-    },
-  });
+// OpenRoute - List all pings (public)
+export const listPings = router.createEndpoint('/ping').get({
+  queryValidator: listPingQueryValidator,
+  handler: async ({ query }) => {
+    const pings = await pingService.listPings(query.limit, query.offset);
+    return {
+      typeName: 'PingList' as const,
+      pings,
+      limit: query.limit,
+      offset: query.offset,
+    };
+  },
+});
 
-  // FullRoute - Update ping (authenticated + validated)
-  const updatePing = router.createEndpoint('/ping/:id').put({
-    authenticator,
-    validator: updatePingValidator,
-    handler: async ({ url }, auth, body) => {
-      const ping = await pingService.updatePing(url.id, body, auth.userId);
-      return {
-        typeName: 'Ping' as const,
-        ...ping,
-      };
-    },
-  });
+// OpenRoute - Get single ping (public)
+export const getPing = router.createEndpoint('/ping/:id').get({
+  handler: async ({ url }) => {
+    const ping = await pingService.getPing(url.id);
+    return {
+      typeName: 'Ping' as const,
+      ...ping,
+    };
+  },
+});
 
-  // AuthenticatedRoute - Delete ping (authenticated only, no body)
-  const deletePing = router.createEndpoint('/ping/:id').delete({
-    authenticator,
-    handler: async ({ url }, auth) => {
-      await pingService.deletePing(url.id, auth.userId);
-      return {
-        typeName: 'DeleteResult' as const,
-        id: url.id,
-        deleted: true,
-      };
-    },
-  });
+// FullRoute - Create ping (authenticated + validated)
+export const createPing = router.createEndpoint('/ping').post({
+  authenticator,
+  validator: createPingValidator,
+  handler: async ({ url }, auth, body) => {
+    const ping = await pingService.createPing(body.message, auth.userId);
+    return {
+      typeName: 'Ping' as const,
+      ...ping,
+    };
+  },
+});
 
-  return [listPings, getPing, createPing, updatePing, deletePing];
-}
+// FullRoute - Update ping (authenticated + validated)
+export const updatePing = router.createEndpoint('/ping/:id').put({
+  authenticator,
+  validator: updatePingValidator,
+  handler: async ({ url }, auth, body) => {
+    const ping = await pingService.updatePing(url.id, body, auth.userId);
+    return {
+      typeName: 'Ping' as const,
+      ...ping,
+    };
+  },
+});
+
+// AuthenticatedRoute - Delete ping (authenticated only, no body)
+export const deletePing = router.createEndpoint('/ping/:id').delete({
+  authenticator,
+  handler: async ({ url }, auth) => {
+    await pingService.deletePing(url.id, auth.userId);
+    return {
+      typeName: 'DeleteResult' as const,
+      id: url.id,
+      deleted: true,
+    };
+  },
+});
+
+export default [listPings, getPing, createPing, updatePing, deletePing];
 `;
 }
 

@@ -6,6 +6,7 @@ import {
   generateTsConfig,
   generateEnvExample,
   generateClaudeMd,
+  generateAuth,
 } from './templates/base';
 import { generateExpressIndex, generateByoServerIndex } from './templates/server/express';
 import { generateByoServerPlaceholder } from './templates/server/byo';
@@ -58,6 +59,12 @@ export function generateFiles(options: ProjectOptions): FileEntry[] {
       content: generateByoServerPlaceholder(),
     });
   }
+
+  // Auth file
+  files.push({
+    path: 'src/auth.ts',
+    content: generateAuth(),
+  });
 
   // Database files
   if (options.database === 'kysely') {
