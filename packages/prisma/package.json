@@ -1,0 +1,60 @@
+{
+  "name": "@fossyl/prisma",
+  "version": "0.16.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YoyoSaur/fossyl.git",
+    "directory": "packages/prisma"
+  },
+  "homepage": "https://github.com/YoyoSaur/fossyl#readme",
+  "bugs": {
+    "url": "https://github.com/YoyoSaur/fossyl/issues"
+  },
+  "description": "Prisma runtime database adapter for fossyl - type-safe ORM, transactions, and migrations",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src", "CLAUDE.md", "README.md"],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "fossyl",
+    "prisma",
+    "typescript",
+    "database",
+    "type-safe",
+    "adapter",
+    "transactions",
+    "migrations",
+    "orm",
+    "postgres",
+    "mysql",
+    "sqlite",
+    "nodejs"
+  ],
+  "author": "YoyoSaur",
+  "license": "GPL-3.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@prisma/client": ">=5.0.0",
+    "@fossyl/core": ">=0.16.0"
+  },
+  "devDependencies": {
+    "@fossyl/core": "workspace:*",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.3"
+  }
+}
