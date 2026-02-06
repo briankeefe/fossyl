@@ -71,6 +71,7 @@ adapter.listen(3000);
 | [`@fossyl/express`](./packages/express) | Express.js runtime adapter |
 | [`@fossyl/zod`](./packages/zod) | Zod validation adapter |
 | [`@fossyl/kysely`](./packages/kysely) | Kysely database adapter |
+| [`@fossyl/prisma`](./packages/prisma) | Prisma database adapter *(this fork)* |
 
 ## Route Types
 
@@ -84,6 +85,44 @@ Fossyl provides four route types based on validation requirements:
 ## Documentation
 
 Each package includes a `CLAUDE.md` file with comprehensive documentation for AI-assisted development.
+
+## Integration Notes (from this fork)
+
+This fork adds `@fossyl/prisma` and was tested by integrating fossyl into a real Next.js 14 SaaS boilerplate (~20 API routes, Prisma + PostgreSQL, NextAuth, Stripe). Below are the limitations and friction points found during integration.
+
+### 1. All POST/PUT routes are wrapped in database transactions
+
+The express adapter unconditionally wraps `ValidatedRoute` (POST with body, no auth) in `withTransaction` and `FullRoute` (POST/PUT with auth + body) in `withTransaction` whenever a `database` adapter is present. The `defaultTransaction` flag on the database adapter is not read by the express adapter.
+
+This means routes that don't touch the database (e.g. a waitlist signup that only sends an email) still get wrapped in a `$transaction` call, which fails if the database is unreachable.
+
+**Suggested fix**: Either respect `defaultTransaction: false` in the express adapter, or allow individual routes to opt out of transaction wrapping.
+
+### 2. DELETE routes cannot have request bodies
+
+Fossyl enforces REST semantics at the type level: `DELETE` routes use `createNoBodyMethod`, so there is no `validator` option. This is correct per HTTP spec, but many real-world APIs (including the boilerplate being integrated) send JSON bodies on DELETE requests (e.g. `DELETE /api/todo` with `{ id: "..." }`).
+
+**Workaround**: Use path parameters instead (`DELETE /api/todo/:id`). This is more RESTful but requires frontend changes when migrating existing APIs.
+
+### 3. Response envelope differs from common patterns
+
+Fossyl wraps all responses in `{ success: "true", type: "TypeName", data: { typeName: "TypeName", ... } }`. Most existing frontends expect unwrapped responses like `{ todos: [...] }` or `{ user: {...} }`.
+
+When migrating an existing API to fossyl, the frontend needs an adapter layer to unwrap the envelope. This fork includes a `fossylClient.ts` example in the integrated project.
+
+### 4. Authenticated routes require a separate auth mechanism
+
+Fossyl's `authenticator` function receives raw headers and must return auth context synchronously from those headers. This works well with JWT/Bearer tokens but does not directly support cookie-based sessions (e.g. NextAuth).
+
+When integrating with a Next.js app that uses NextAuth cookie sessions, a bridge endpoint is needed on the Next.js side (`GET /api/auth/token`) that exchanges the session cookie for a JWT the fossyl server can validate.
+
+### 5. Streaming responses are not supported
+
+Fossyl's express adapter calls `res.json(wrapResponse(result))` on the handler's return value. Routes that need streaming responses (e.g. Server-Sent Events for AI chat via Vercel AI SDK's `toDataStreamResponse()`) cannot be migrated to fossyl and must remain as framework-native handlers.
+
+### 6. Webhook routes with raw body access
+
+Routes that need access to the raw request body (e.g. Stripe webhook signature verification) cannot use fossyl because the express adapter parses JSON via `express.json()` before the handler runs. These routes must remain outside fossyl.
 
 ## License
 
